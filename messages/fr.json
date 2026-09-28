@@ -133,6 +133,7 @@
     "cancel": "Annuler",
     "confirmed": "J'ai confirmé",
     "checkingPayment": "Vérification…",
+    "stillPendingConfirm": "En attente de votre portefeuille. Gardez cette page ouverte — nous vérifions automatiquement.",
     "smsTitle": "Entrez le code reçu",
     "smsDesc": "Nous avons envoyé un code de vérification au {phone}. Saisissez-le ci-dessous.",
     "smsPh": "Code de vérification",

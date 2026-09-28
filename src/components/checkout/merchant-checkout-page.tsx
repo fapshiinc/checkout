@@ -16,6 +16,7 @@ import { resolveFapshiApiEnvironment } from "@/lib/api-base";
 import { toPaymentPhone } from "@/lib/phone";
 import { CheckoutInlineAlert } from "@/components/checkout/checkout-inline-alert";
 import type { MerchantCheckoutSession } from "@/lib/types";
+import { useTranslations } from "@/lib/translations";
 
 function checkoutEnvironment(): "sandbox" | "live" {
   return resolveFapshiApiEnvironment() === "sandbox" ? "sandbox" : "live";
@@ -31,6 +32,7 @@ export function MerchantCheckoutPage({
 }: {
   session: MerchantCheckoutSession;
 }) {
+  const t = useTranslations("merchantCheckout");
   const appearance = session.appearance;
   const primaryColor = resolveCheckoutPrimary(appearance.primaryColor);
   const displayTitle = appearance.title?.trim() || session.serviceName;
@@ -177,8 +179,16 @@ export function MerchantCheckoutPage({
     setError(null);
     setConfirmChecking(true);
     try {
-      const done = await pollStatus();
-      if (!done) setPhase("failed");
+      /** One status call can return PENDING while the wallet is still processing. */
+      const maxChecks = 8;
+      for (let i = 0; i < maxChecks; i++) {
+        const done = await pollStatus();
+        if (done) return;
+        if (i < maxChecks - 1) {
+          await new Promise((resolve) => setTimeout(resolve, 4000));
+        }
+      }
+      setError(t("stillPendingConfirm"));
     } finally {
       setConfirmChecking(false);
     }

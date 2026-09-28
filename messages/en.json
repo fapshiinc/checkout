@@ -133,6 +133,7 @@
     "cancel": "Cancel",
     "confirmed": "I've confirmed it",
     "checkingPayment": "Checking…",
+    "stillPendingConfirm": "Still waiting on your wallet. Keep this page open—we'll keep checking automatically.",
     "smsTitle": "Enter the code we sent",
     "smsDesc": "We texted a verification code to {phone}. Enter it below to continue.",
     "smsPh": "Verification code",

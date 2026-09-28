@@ -3,7 +3,8 @@
 Public hosted checkout for merchant payment links (initiate-pay / `merchant-link`).
 
 Production: **https://checkout.fapshi.com/{mongoId}**  
-Sandbox (initiate-pay with sandbox keys): **https://checkout.fapshi.com/test/{mongoId}**
+Sandbox (initiate-pay with sandbox keys): **https://checkout.fapshi.com/test/{mongoId}**  
+Sandbox routes call **`https://sandbox.fapshi.com`** for `merchant-link`, `merchantpay/*`, and status (not `NEXT_PUBLIC_API_URL` / staging).
 
 ## Setup
 

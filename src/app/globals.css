@@ -1,0 +1,277 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-store-cta: var(--store-cta);
+  --color-store-cta-foreground: var(--store-cta-foreground);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: #f8f9fb;
+  --foreground: #111111;
+  --card: #ffffff;
+  --card-foreground: #111111;
+  --primary: #3f5cfd;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f3f5;
+  --secondary-foreground: #111111;
+  --muted: #f1f3f5;
+  --muted-foreground: #6b7280;
+  --accent: #eef1ff;
+  --accent-foreground: #3f5cfd;
+  --destructive: #dc2626;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #3f5cfd;
+  --store-cta: #111111;
+  --store-cta-foreground: #ffffff;
+}
+
+.dark {
+  --background: #0a0b0f;
+  --foreground: #f4f4f5;
+  --card: #13151c;
+  --card-foreground: #f4f4f5;
+  --primary: #6b84ff;
+  --primary-foreground: #ffffff;
+  --secondary: #1a1d27;
+  --secondary-foreground: #f4f4f5;
+  --muted: #1a1d27;
+  --muted-foreground: #9ca3af;
+  --accent: #1e2440;
+  --accent-foreground: #8da2ff;
+  --destructive: #f87171;
+  --border: #252836;
+  --input: #252836;
+  --ring: #6b84ff;
+  --store-cta: #f4f4f5;
+  --store-cta-foreground: #111111;
+}
+
+body {
+  background: #f6f7f9;
+  color: #1a1a1a;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.02em;
+  -webkit-font-smoothing: antialiased;
+  color-scheme: light;
+}
+
+.checkout-root,
+.checkout-experience {
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--muted) 0%,
+    color-mix(in srgb, var(--muted) 70%, var(--foreground) 8%) 45%,
+    var(--muted) 90%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.store-container {
+  @apply mx-auto w-full max-w-[1120px] px-4 sm:px-6;
+}
+
+.page-container {
+  @apply mx-auto w-full max-w-[1120px] px-4 sm:px-6;
+}
+
+.store-page {
+  @apply min-h-screen bg-background;
+}
+
+.product-page {
+  @apply min-h-screen bg-background;
+}
+
+.store-hero-band {
+  @apply border-b border-border bg-card;
+  background-image: radial-gradient(
+    ellipse 70% 50% at 50% -20%,
+    rgba(63, 92, 253, 0.14),
+    transparent
+  );
+}
+
+.dark .store-hero-band {
+  background-image: radial-gradient(
+    ellipse 70% 50% at 50% -20%,
+    rgba(107, 132, 255, 0.18),
+    transparent
+  );
+}
+
+.store-card {
+  @apply rounded-xl border border-border bg-card shadow-sm;
+}
+
+.store-buy-panel {
+  @apply rounded-xl border border-border bg-card p-5 shadow-sm sm:p-6;
+}
+
+.store-link {
+  @apply text-sm font-medium text-foreground/70 underline-offset-4 transition-colors hover:text-primary hover:underline cursor-pointer;
+}
+
+.store-divider {
+  @apply border-t border-border;
+}
+
+.store-badge {
+  @apply inline-flex items-center rounded-full bg-accent px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-primary;
+}
+
+.checkout-rail {
+  @apply mx-auto flex w-full max-w-[560px] px-[18px] sm:px-[22px];
+}
+
+.checkout-main {
+  @apply mx-auto w-full max-w-[560px] px-4 pb-10 pt-5 sm:px-[22px] sm:pb-14 sm:pt-9;
+}
+
+.checkout-kicker {
+  @apply text-[11px] font-bold uppercase tracking-[0.1em] text-[#7A8496];
+}
+
+.checkout-input {
+  @apply w-full rounded-[13px] border border-[rgba(14,17,22,0.11)] bg-white px-3.5 py-3.5 text-[15px] font-semibold text-[#0E1116] outline-none;
+}
+
+.checkout-input:focus {
+  border-color: var(--checkout-primary, #3f5cfd);
+}
+
+.checkout-primary-btn {
+  @apply w-full cursor-pointer rounded-[13px] border-none px-[18px] py-[15px] text-[14.5px] font-bold text-white transition-[filter] hover:brightness-95;
+  background: var(--checkout-primary, #3f5cfd);
+}
+
+.checkout-ghost-btn {
+  @apply w-full cursor-pointer rounded-[13px] border border-[rgba(14,17,22,0.13)] bg-white px-3.5 py-3.5 text-sm font-bold text-[#0E1116];
+}
+
+.checkout-spinner {
+  @apply inline-block rounded-full border-[rgba(14,17,22,0.09)] border-t-[var(--checkout-primary,#3f5cfd)] animate-spin;
+}
+
+.checkout-footer {
+  @apply fixed bottom-0 left-0 right-0 z-10 border-t border-[#f3f4f6] bg-white/90 backdrop-blur-sm;
+}
+
+.safe-area-pb {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+.checkout-field {
+  @apply h-11 w-full rounded-lg border-[1.5px] border-[#d6d8dd] bg-white px-3 text-base shadow-[0_1px_3px_rgba(0,0,0,0.06)] outline-none;
+}
+
+.checkout-field:focus {
+  border-color: #a7aecf;
+}
+
+.checkout-field--locked {
+  @apply cursor-not-allowed border-[#eef0f3] bg-[#fafbfc] text-[#46505F];
+}
+
+.checkout-pay-minimal {
+  @apply flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-[15px] font-semibold transition-[filter,transform] disabled:cursor-not-allowed disabled:opacity-40;
+  background: var(--checkout-primary, #111111);
+  color: #ffffff;
+}
+
+.checkout-pay-minimal:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.checkout-pay-minimal:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.checkout-outline-btn {
+  @apply flex min-h-11 cursor-pointer items-center justify-center rounded-lg border border-[#d6d8dd] bg-white px-4 py-2.5 text-[15px] font-semibold text-[#1a1a1a] transition-colors disabled:cursor-not-allowed disabled:opacity-40;
+}
+
+.checkout-outline-btn:hover:not(:disabled) {
+  @apply border-[#c5c9d0] bg-[#fafbfc];
+}
+
+.checkout-phase-enter {
+  animation: checkout-phase-enter 0.35s ease-out both;
+}
+
+@keyframes checkout-phase-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dashboard iframe preview — always light, same as live initiate-pay checkout */
+html.checkout-preview-embed,
+html.checkout-preview-embed body {
+  min-height: 100%;
+  background: #f6f7f9 !important;
+  color-scheme: light;
+}

@@ -201,7 +201,7 @@ export function CheckoutExperience({
     <div
       className={cn(
         "checkout-shell checkout-experience flex flex-col bg-[#f6f7f9] font-sans text-[#1a1a1a]",
-        embed ? "min-h-[100dvh]" : "min-h-[100dvh]",
+        !hugFooter && "min-h-[100dvh]",
         hugFooter && "checkout-shell--hug"
       )}
       style={{ ["--checkout-primary" as string]: payButtonBg }}

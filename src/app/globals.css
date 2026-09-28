@@ -218,13 +218,23 @@ body {
   @apply flex min-h-[100dvh] flex-col;
 }
 
-/** Success/failed: card + footer stay together (centered), not pinned apart by flex-1 / mt-auto. */
-.checkout-shell--hug {
-  @apply justify-center;
+/**
+ * Success/failed: natural document height — no full-viewport shell or body stretch
+ * (avoids a large empty band below the footer).
+ */
+.checkout-shell.checkout-shell--hug {
+  min-height: auto;
+  height: auto;
+}
+
+html:has(.checkout-shell--hug),
+body:has(.checkout-shell--hug) {
+  min-height: auto;
+  height: auto;
 }
 
 .checkout-shell--hug .checkout-shell__stack {
-  @apply flex w-full shrink-0 flex-col;
+  @apply flex w-full flex-col;
 }
 
 .checkout-shell--hug .checkout-footer {

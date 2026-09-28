@@ -274,7 +274,7 @@ html:has(.checkout-shell--receipt) body {
 }
 
 .merchant-receipt__sheet {
-  @apply overflow-hidden rounded-xl border border-[#e5e7eb] bg-white text-[#1a1a1a] shadow-[0_1px_3px_rgba(0,0,0,0.06),0_8px_24px_rgba(0,0,0,0.04)];
+  @apply overflow-hidden rounded-xl bg-white text-[#1a1a1a] shadow-[0_1px_3px_rgba(0,0,0,0.06),0_8px_24px_rgba(0,0,0,0.04)];
 }
 
 .merchant-receipt__header {
@@ -290,23 +290,7 @@ html:has(.checkout-shell--receipt) body {
 }
 
 .merchant-receipt__logo {
-  @apply mt-1 h-4 w-auto shrink-0 opacity-90;
-}
-
-.merchant-receipt__logo--merchant {
-  @apply h-11 max-h-11 max-w-[220px] w-auto object-contain object-right opacity-100;
-}
-
-.merchant-receipt__logo-fallback {
-  @apply flex max-w-[200px] items-center justify-end gap-2 text-right;
-}
-
-.merchant-receipt__logo-mark {
-  @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#e5e7eb] bg-[#f9fafb] text-sm font-semibold text-[#1a1a1a];
-}
-
-.merchant-receipt__logo-text {
-  @apply truncate text-sm font-semibold text-[#1a1a1a];
+  @apply mt-1 h-5 w-auto shrink-0;
 }
 
 .merchant-receipt__parties {
@@ -350,7 +334,7 @@ html:has(.checkout-shell--receipt) body {
 }
 
 .merchant-receipt__details-title {
-  @apply text-xs font-semibold uppercase tracking-wide text-[#9ca3af];
+  @apply text-xs font-semibold uppercase tracking-wide text-[#46505F];
 }
 
 .merchant-receipt__details-list {
@@ -362,11 +346,11 @@ html:has(.checkout-shell--receipt) body {
 }
 
 .merchant-receipt__details-list dt {
-  @apply font-medium text-[#72747c];
+  @apply font-medium text-[#374151];
 }
 
 .merchant-receipt__details-list dd {
-  @apply max-w-[65%] break-all text-right font-semibold text-[#1a1a1a];
+  @apply max-w-[65%] break-all text-right font-semibold text-[#0a0a0a];
 }
 
 .merchant-receipt__details-total {
@@ -396,7 +380,6 @@ html:has(.checkout-shell--receipt) body {
 
   .merchant-receipt__sheet {
     box-shadow: none;
-    border-color: #e5e7eb;
   }
 
   .merchant-receipt__footnote {

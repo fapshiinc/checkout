@@ -1,70 +1,23 @@
 "use client";
 
-import type { CheckoutApiEnvironment } from "@/lib/checkout-api-environment";
 import type { MerchantPaymentReceipt } from "@/lib/merchant-receipt";
-import { resolveMerchantImageUrl } from "@/lib/merchant-receipt";
 import {
   formatReceiptNumber,
   formatReceiptPaidDate,
 } from "@/lib/receipt-format";
-import { readStashedReceiptLogo } from "@/lib/receipt-logo-storage";
 import { useLocale, useTranslations } from "@/lib/translations";
 import { formatAmount } from "@/lib/utils";
-import { useEffect, useState } from "react";
-
-function ReceiptHeaderLogo({
-  logoUrl,
-  merchantName,
-}: {
-  logoUrl?: string;
-  merchantName: string;
-}) {
-  if (
-    logoUrl?.startsWith("http://") ||
-    logoUrl?.startsWith("https://") ||
-    logoUrl?.startsWith("//")
-  ) {
-    const resolved = logoUrl.startsWith("//") ? `https:${logoUrl}` : logoUrl;
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={resolved}
-        alt={merchantName}
-        className="merchant-receipt__logo merchant-receipt__logo--merchant"
-      />
-    );
-  }
-  const initial = merchantName.slice(0, 1).toUpperCase();
-  return (
-    <span className="merchant-receipt__logo-fallback">
-      <span className="merchant-receipt__logo-mark">{initial}</span>
-      <span className="merchant-receipt__logo-text">{merchantName}</span>
-    </span>
-  );
-}
+import Image from "next/image";
 
 export function MerchantPaymentReceiptView({
   receipt,
-  environment = "live",
 }: {
   receipt: MerchantPaymentReceipt;
   environment?: CheckoutApiEnvironment;
 }) {
   const t = useTranslations("merchantCheckout");
   const { locale } = useLocale();
-  const [logoOverride, setLogoOverride] = useState<string | undefined>();
 
-  useEffect(() => {
-    if (receipt.logoUrl) return;
-    const stored = readStashedReceiptLogo(receipt.transferId);
-    if (stored) {
-      setLogoOverride(
-        resolveMerchantImageUrl(stored, environment) ?? stored
-      );
-    }
-  }, [receipt.logoUrl, receipt.transferId, environment]);
-
-  const displayLogoUrl = receipt.logoUrl ?? logoOverride;
   const amountDisplay =
     receipt.amount != null ? formatAmount(receipt.amount, locale) : "—";
   const paidOn =
@@ -107,9 +60,13 @@ export function MerchantPaymentReceiptView({
         <header className="merchant-receipt__header">
           <div className="merchant-receipt__title-row">
             <h1 className="merchant-receipt__title">{t("receiptPageTitle")}</h1>
-            <ReceiptHeaderLogo
-              logoUrl={displayLogoUrl}
-              merchantName={merchantName}
+            <Image
+              src="/logos/logoBlack.svg"
+              alt="Fapshi"
+              width={88}
+              height={20}
+              className="merchant-receipt__logo"
+              priority
             />
           </div>
 

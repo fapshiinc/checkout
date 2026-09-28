@@ -37,7 +37,7 @@ export function isValidPayerPhone(raw: string): boolean {
   return getMobileMoneyProvider(raw) !== null;
 }
 
-/** 9-digit Cameroon MSISDN as integer for order/payment APIs */
-export function toPaymentPhone(raw: string): number {
-  return parseInt(normalizeCameroonPhone(raw), 10);
+/** 9-digit Cameroon MSISDN string for merchantpay APIs (sandbox + live). */
+export function toPaymentPhone(raw: string): string {
+  return normalizeCameroonPhone(raw);
 }

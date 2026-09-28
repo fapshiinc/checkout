@@ -44,7 +44,7 @@ export interface MerchantCheckoutSession {
 
 export interface MerchantPayMomoPayload {
   transferId: string;
-  phone: number;
+  phone: string;
   clientName: string;
   email?: string;
 }

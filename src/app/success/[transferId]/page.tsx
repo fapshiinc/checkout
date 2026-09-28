@@ -8,7 +8,7 @@ export default async function CheckoutSuccessPage({
 }: {
   params: Promise<{ transferId: string }>;
 }) {
-  const { transferId } = await params;
+  await params;
 
   return (
     <div className="checkout-shell checkout-experience flex flex-col bg-[#f6f7f9] text-[#1a1a1a]">
@@ -19,10 +19,6 @@ export default async function CheckoutSuccessPage({
         <h1 className="text-2xl font-semibold">Payment successful!</h1>
         <p className="mt-2 text-sm text-[#72747c]">
           Thank you — your payment has been confirmed.
-        </p>
-        <p className="mt-4 text-sm">
-          Transaction ID:{" "}
-          <span className="font-mono font-medium">{transferId}</span>
         </p>
         <Button size="lg" className="mt-8" asChild>
           <Link href="https://fapshi.com">Done</Link>

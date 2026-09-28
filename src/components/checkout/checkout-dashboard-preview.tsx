@@ -11,7 +11,6 @@ import { resolveCheckoutPrimary } from "@/lib/checkout-theme";
 import type { MerchantCheckoutAppearance } from "@/lib/types";
 
 const PREVIEW_AMOUNT = 500;
-const PREVIEW_TRANSFER_ID = "PREVIEW01";
 
 function readParam(
   params: URLSearchParams,
@@ -103,7 +102,6 @@ export function CheckoutDashboardPreview() {
       primaryColor={primaryColor}
       environment={sandbox ? "sandbox" : "live"}
       amount={PREVIEW_AMOUNT}
-      transferId={PREVIEW_TRANSFER_ID}
       displayTitle={displayTitle}
       phase={phase}
       name={name}

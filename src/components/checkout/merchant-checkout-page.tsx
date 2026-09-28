@@ -204,7 +204,6 @@ export function MerchantCheckoutPage({
         primaryColor={primaryColor}
         environment={checkoutEnvironment()}
         amount={session.amount}
-        transferId={session.transferId}
         displayTitle={displayTitle}
         message={appearance.message || session.message}
         payerEmail={session.payerEmail}

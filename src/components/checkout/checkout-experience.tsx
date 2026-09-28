@@ -59,7 +59,6 @@ export interface CheckoutExperienceProps {
   primaryColor: string;
   environment?: "sandbox" | "live";
   amount: number;
-  transferId: string;
   displayTitle: string;
   message?: string;
   payerEmail?: string;
@@ -99,7 +98,6 @@ export function CheckoutExperience({
   primaryColor,
   environment = "live",
   amount,
-  transferId,
   displayTitle,
   message,
   payerEmail,
@@ -271,9 +269,6 @@ export function CheckoutExperience({
                   {message.trim()}
                 </p>
               ) : null}
-              <p className="mt-3 text-[11px] font-medium text-[#8b8b95] tabular-nums">
-                {t("ref")} {transferId}
-              </p>
             </div>
           ) : null}
 
@@ -566,9 +561,6 @@ export function CheckoutExperience({
                 <CheckoutPayButton onClick={onReset} style={payBtnStyle}>
                   {t("tryAgain")}
                 </CheckoutPayButton>
-                <p className="text-xs text-[#8b8b95]">
-                  {t("ref")} {transferId}
-                </p>
               </section>
             )}
           </div>

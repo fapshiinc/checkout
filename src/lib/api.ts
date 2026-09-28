@@ -13,6 +13,7 @@ import {
   resolveMerchantLinkPayer,
   type MerchantLinkPayload,
 } from "./resolve-checkout-appearance";
+import { normalizeMerchantPayPhone } from "@/lib/merchant-pay-phone";
 import type {
   MerchantCheckoutSession,
   MerchantPayMomoPayload,
@@ -90,13 +91,17 @@ export async function payMerchantWithMomo(
   payload: MerchantPayMomoPayload,
   environment: CheckoutApiEnvironment = "live"
 ): Promise<MerchantPayMomoResponse> {
+  const body: MerchantPayMomoPayload = {
+    ...payload,
+    phone: normalizeMerchantPayPhone(payload.phone),
+  };
   const response = await fetch("/api/pay/merchant/momo", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       ...checkoutEnvRequestHeaders(environment),
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify(body),
   });
 
   const data = (await response.json().catch(() => ({}))) as MerchantPayMomoResponse & {

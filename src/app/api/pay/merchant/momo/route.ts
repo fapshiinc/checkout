@@ -3,13 +3,14 @@ import {
   resolveCheckoutEnvFromRequest,
 } from "@/lib/checkout-api-environment";
 import { getCheckoutOrigin } from "@/lib/checkout-origin";
+import { normalizeMerchantPayPhone } from "@/lib/merchant-pay-phone";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as Record<string, unknown>;
     if (body.phone != null && body.phone !== "") {
-      body.phone = String(body.phone).replace(/\D/g, "").slice(-9);
+      body.phone = normalizeMerchantPayPhone(body.phone);
     }
     const apiBase = getMerchantApiBase(resolveCheckoutEnvFromRequest(request));
 

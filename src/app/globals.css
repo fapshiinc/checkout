@@ -218,6 +218,11 @@ body {
   @apply flex min-h-[100dvh] flex-col;
 }
 
+/** Short terminal states (success/failed): footer follows the card, no viewport gap. */
+.checkout-shell--hug .checkout-footer {
+  @apply mt-0;
+}
+
 .checkout-footer {
   @apply mt-auto w-full shrink-0 border-t border-[#f3f4f6] bg-white/90 backdrop-blur-sm;
   padding-top: 0.75rem;

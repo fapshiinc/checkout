@@ -241,6 +241,63 @@ body:has(.checkout-shell--hug) {
   @apply mt-0;
 }
 
+/** Stripe-inspired payment success */
+.checkout-success {
+  @apply px-6 py-10 text-center sm:px-8 sm:py-12;
+}
+
+.checkout-success__hero {
+  @apply mx-auto max-w-sm;
+}
+
+.checkout-success__icon {
+  @apply mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-[#ecfdf3];
+}
+
+.checkout-success__title {
+  @apply text-[1.35rem] font-semibold tracking-tight text-[#1a1a1a] sm:text-2xl;
+}
+
+.checkout-success__greeting {
+  @apply mt-2 text-sm leading-relaxed text-[#72747c];
+}
+
+.checkout-success__receipt {
+  @apply mx-auto mt-8 max-w-sm rounded-xl border border-[#e8eaed] bg-[#fafbfc] px-4 py-1 text-left text-sm;
+}
+
+.checkout-success__row {
+  @apply grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4 gap-y-0.5 border-b border-[#eef0f3] py-3.5;
+}
+
+.checkout-success__row--last {
+  @apply border-b-0;
+}
+
+.checkout-success__row dt {
+  @apply text-[13px] font-medium text-[#72747c];
+}
+
+.checkout-success__row dd {
+  @apply text-[13px] font-semibold tabular-nums text-[#1a1a1a];
+}
+
+.checkout-success__actions {
+  @apply mx-auto mt-8 max-w-sm;
+}
+
+.checkout-success__primary {
+  @apply flex min-h-11 cursor-pointer items-center justify-center rounded-lg px-4 py-2.5 text-[15px] font-semibold text-white transition-[filter] hover:brightness-105;
+}
+
+.checkout-success__secondary {
+  @apply flex min-h-11 cursor-pointer items-center justify-center rounded-lg border border-[#d6d8dd] bg-white px-4 py-2.5 text-[15px] font-semibold text-[#1a1a1a];
+}
+
+.checkout-success__redirect-hint {
+  @apply mt-3 text-xs text-[#8b8b95];
+}
+
 .checkout-footer {
   @apply mt-auto w-full shrink-0 border-t border-[#f3f4f6] bg-white/90 backdrop-blur-sm;
   padding-top: 0.75rem;

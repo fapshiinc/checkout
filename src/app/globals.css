@@ -218,7 +218,15 @@ body {
   @apply flex min-h-[100dvh] flex-col;
 }
 
-/** Short terminal states (success/failed): footer follows the card, no viewport gap. */
+/** Success/failed: card + footer stay together (centered), not pinned apart by flex-1 / mt-auto. */
+.checkout-shell--hug {
+  @apply justify-center;
+}
+
+.checkout-shell--hug .checkout-shell__stack {
+  @apply flex w-full shrink-0 flex-col;
+}
+
 .checkout-shell--hug .checkout-footer {
   @apply mt-0;
 }

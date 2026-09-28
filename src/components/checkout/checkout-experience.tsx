@@ -214,10 +214,18 @@ export function CheckoutExperience({
 
       <div
         className={cn(
-          "mx-auto flex w-full max-w-[420px] flex-col px-4 pb-4 pt-4",
-          !hugFooter && "flex-1"
+          "flex w-full flex-col",
+          hugFooter
+            ? "checkout-shell__stack shrink-0"
+            : "min-h-0 flex-1"
         )}
       >
+        <div
+          className={cn(
+            "mx-auto flex w-full max-w-[420px] flex-col px-4 pt-4",
+            hugFooter ? "pb-0" : "flex-1 pb-4"
+          )}
+        >
         {showMerchantBack || showLocaleToggle ? (
           <div className="mb-3 flex items-center justify-between gap-3">
             {showMerchantBack && webBack ? (
@@ -573,9 +581,10 @@ export function CheckoutExperience({
             )}
           </div>
         </div>
-      </div>
+        </div>
 
-      <CheckoutFooter />
+        <CheckoutFooter />
+      </div>
     </div>
   );
 }

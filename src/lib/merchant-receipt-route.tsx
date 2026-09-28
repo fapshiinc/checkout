@@ -50,7 +50,7 @@ export async function MerchantReceiptRoute({
 
   return (
     <div className="checkout-shell checkout-shell--document checkout-shell--receipt checkout-experience flex flex-col overflow-x-hidden bg-white text-[#1a1a1a]">
-      <main className="checkout-main mx-auto w-full min-w-0 max-w-[1024px] flex-1 px-4 pt-6 sm:px-12">
+      <main className="checkout-main mx-auto w-full min-w-0 max-w-[720px] flex-1 px-4 pt-6 sm:px-6">
         <MerchantPaymentReceiptView
           receipt={{
             ...receipt,

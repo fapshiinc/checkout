@@ -36,7 +36,7 @@ function ReceiptHeaderLogo({
   }
   const initial = merchantName.slice(0, 1).toUpperCase();
   return (
-    <span className="merchant-receipt__logo-fallback" aria-hidden>
+    <span className="merchant-receipt__logo-fallback">
       <span className="merchant-receipt__logo-mark">{initial}</span>
       <span className="merchant-receipt__logo-text">{merchantName}</span>
     </span>
@@ -73,7 +73,23 @@ export function MerchantPaymentReceiptView({
   const receiptNumber = formatReceiptNumber(receipt.transferId);
   const merchantName =
     receipt.serviceName?.trim() || t("receiptMerchantFallback");
-  const lineDescription = t("receiptLineItemDesc", { merchant: merchantName });
+
+  const detailRows: { label: string; value: string }[] = [
+    { label: t("receiptNumberLabel"), value: receiptNumber },
+    { label: t("receiptTransferId"), value: receipt.transferId },
+  ];
+  if (paidOn) {
+    detailRows.push({ label: t("receiptPaidOn"), value: paidOn });
+  }
+  if (receipt.medium) {
+    detailRows.push({ label: t("receiptMedium"), value: receipt.medium });
+  }
+  if (receipt.payerName) {
+    detailRows.push({ label: t("receiptPaidBy"), value: receipt.payerName });
+  }
+  if (receipt.email) {
+    detailRows.push({ label: t("receiptEmail"), value: receipt.email });
+  }
 
   return (
     <div className="merchant-receipt">
@@ -88,131 +104,85 @@ export function MerchantPaymentReceiptView({
       </div>
 
       <article className="merchant-receipt__sheet">
-        <div className="merchant-receipt__title-row">
-          <h1 className="merchant-receipt__title">{t("receiptPageTitle")}</h1>
-          <ReceiptHeaderLogo
-            logoUrl={displayLogoUrl}
-            merchantName={merchantName}
-          />
-        </div>
+        <header className="merchant-receipt__header">
+          <div className="merchant-receipt__title-row">
+            <h1 className="merchant-receipt__title">{t("receiptPageTitle")}</h1>
+            <ReceiptHeaderLogo
+              logoUrl={displayLogoUrl}
+              merchantName={merchantName}
+            />
+          </div>
 
-        <dl className="merchant-receipt__meta">
-          <div>
-            <dt>{t("receiptNumberLabel")}</dt>
-            <dd>{receiptNumber}</dd>
-          </div>
-          <div>
-            <dt>{t("receiptTransferId")}</dt>
-            <dd className="merchant-receipt__mono">{receipt.transferId}</dd>
-          </div>
-          {paidOn ? (
+          <div className="merchant-receipt__parties">
             <div>
-              <dt>{t("receiptPaidOn")}</dt>
-              <dd>{paidOn}</dd>
-            </div>
-          ) : null}
-        </dl>
-
-        <div className="merchant-receipt__parties">
-          <div>
-            <h2 className="merchant-receipt__party-heading">
-              {t("receiptFromHeading")}
-            </h2>
-            <p className="merchant-receipt__party-name">{merchantName}</p>
-          </div>
-          <div>
-            <h2 className="merchant-receipt__party-heading">
-              {t("receiptBillToHeading")}
-            </h2>
-            {receipt.payerName ? (
-              <p className="merchant-receipt__party-name">{receipt.payerName}</p>
-            ) : null}
-            {receipt.email ? (
-              <p className="merchant-receipt__party-line">{receipt.email}</p>
-            ) : null}
-            {!receipt.payerName && !receipt.email ? (
-              <p className="merchant-receipt__party-line">—</p>
-            ) : null}
-          </div>
-        </div>
-
-        {paidOn ? (
-          <p className="merchant-receipt__headline">
-            {t("receiptPaidHeadline", { amount: amountDisplay, date: paidOn })}
-          </p>
-        ) : null}
-
-        <div className="merchant-receipt__table-wrap">
-          <table className="merchant-receipt__line-items">
-            <thead>
-              <tr>
-                <th scope="col">{t("receiptColDescription")}</th>
-                <th scope="col">{t("receiptColQty")}</th>
-                <th scope="col">{t("receiptColUnitPrice")}</th>
-                <th scope="col">{t("receiptColAmount")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <span className="merchant-receipt__line-primary">
-                    {lineDescription}
-                  </span>
-                </td>
-                <td>1</td>
-                <td>{amountDisplay}</td>
-                <td>{amountDisplay}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div className="merchant-receipt__totals">
-          <dl>
-            <div>
-              <dt>{t("receiptSubtotal")}</dt>
-              <dd>{amountDisplay}</dd>
+              <h2 className="merchant-receipt__party-heading">
+                {t("receiptFromHeading")}
+              </h2>
+              <p className="merchant-receipt__party-name">{merchantName}</p>
             </div>
             <div>
-              <dt>{t("receiptTotalLabel")}</dt>
-              <dd>{amountDisplay}</dd>
+              <h2 className="merchant-receipt__party-heading">
+                {t("receiptBillToHeading")}
+              </h2>
+              {receipt.payerName ? (
+                <p className="merchant-receipt__party-name">
+                  {receipt.payerName}
+                </p>
+              ) : null}
+              {receipt.email ? (
+                <p className="merchant-receipt__party-line">{receipt.email}</p>
+              ) : null}
+              {!receipt.payerName && !receipt.email ? (
+                <p className="merchant-receipt__party-line">—</p>
+              ) : null}
             </div>
-            <div className="merchant-receipt__totals-paid">
-              <dt>{t("receiptAmountPaid")}</dt>
+          </div>
+        </header>
+
+        <div className="merchant-receipt__summary">
+          <div className="merchant-receipt__summary-main">
+            {paidOn ? (
+              <p className="merchant-receipt__headline">
+                {t("receiptPaidHeadline", {
+                  amount: amountDisplay,
+                  date: paidOn,
+                })}
+              </p>
+            ) : (
+              <p className="merchant-receipt__summary-amount">
+                {amountDisplay}
+              </p>
+            )}
+            <p className="merchant-receipt__summary-merchant">
+              {t("receiptPaidTo", { merchant: merchantName })}
+            </p>
+          </div>
+          <span className="merchant-receipt__status">
+            {t("receiptStatusPaid")}
+          </span>
+        </div>
+
+        <section className="merchant-receipt__details">
+          <h2 className="merchant-receipt__details-title">
+            {t("receiptHeading")}
+          </h2>
+          <dl className="merchant-receipt__details-list">
+            {detailRows.map((row) => (
+              <div key={row.label}>
+                <dt>{row.label}</dt>
+                <dd>{row.value}</dd>
+              </div>
+            ))}
+            <div className="merchant-receipt__details-total">
+              <dt>{t("receiptTotal")}</dt>
               <dd>{amountDisplay}</dd>
             </div>
           </dl>
-        </div>
-
-        <section className="merchant-receipt__history">
-          <h3 className="merchant-receipt__history-title">
-            {t("receiptPaymentHistory")}
-          </h3>
-          <table className="merchant-receipt__history-table">
-            <thead>
-              <tr>
-                <th scope="col">{t("receiptMedium")}</th>
-                <th scope="col">{t("receiptDateCol")}</th>
-                <th scope="col">{t("receiptAmountPaid")}</th>
-                <th scope="col">{t("receiptNumberLabel")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{receipt.medium ?? "—"}</td>
-                <td>{paidOn ?? "—"}</td>
-                <td>{amountDisplay}</td>
-                <td>{receiptNumber}</td>
-              </tr>
-            </tbody>
-          </table>
         </section>
 
-        {receipt.serviceName?.trim() ? (
-          <footer className="merchant-receipt__legal">
-            <p>{merchantName}</p>
-          </footer>
-        ) : null}
+        <footer className="merchant-receipt__footnote">
+          <p>{t("receiptFootnote", { merchant: merchantName })}</p>
+        </footer>
       </article>
     </div>
   );

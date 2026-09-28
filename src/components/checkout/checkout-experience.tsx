@@ -201,41 +201,14 @@ export function CheckoutExperience({
   const showSummary =
     phase === "idle" || phase === "initiating" || phase === "sms";
 
-  const hugFooter = phase === "success" || phase === "failed";
-
-  useEffect(() => {
-    if (!hugFooter) return;
-    document.documentElement.classList.add("checkout-terminal-page");
-    return () => {
-      document.documentElement.classList.remove("checkout-terminal-page");
-    };
-  }, [hugFooter]);
-
   return (
     <div
-      className={cn(
-        "checkout-shell checkout-experience flex flex-col bg-[#f6f7f9] font-sans text-[#1a1a1a]",
-        !hugFooter && "checkout-shell--fill",
-        hugFooter && "checkout-shell--hug"
-      )}
+      className="checkout-shell checkout-experience flex flex-col bg-[#f6f7f9] font-sans text-[#1a1a1a]"
       style={{ ["--checkout-primary" as string]: payButtonBg }}
     >
       {isSandbox ? <CheckoutSandboxBanner /> : null}
 
-      <div
-        className={cn(
-          "flex w-full flex-col",
-          hugFooter
-            ? "checkout-shell__stack shrink-0"
-            : "min-h-0 flex-1"
-        )}
-      >
-        <div
-          className={cn(
-            "mx-auto flex w-full max-w-[420px] flex-col px-4 pt-4",
-            hugFooter ? "pb-0" : "flex-1 pb-4"
-          )}
-        >
+      <div className="mx-auto flex w-full max-w-[420px] flex-1 flex-col px-4 pb-4 pt-4">
         {showMerchantBack || showLocaleToggle ? (
           <div className="mb-3 flex items-center justify-between gap-3">
             {showMerchantBack && webBack ? (
@@ -591,10 +564,9 @@ export function CheckoutExperience({
             )}
           </div>
         </div>
-        </div>
-
-        <CheckoutFooter />
       </div>
+
+      <CheckoutFooter />
     </div>
   );
 }

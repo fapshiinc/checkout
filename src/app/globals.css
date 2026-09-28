@@ -84,12 +84,6 @@ body {
   min-height: 100dvh;
 }
 
-html.checkout-terminal-page,
-html.checkout-terminal-page body {
-  min-height: 0;
-  height: auto;
-}
-
 .checkout-root,
 .checkout-experience {
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
@@ -219,25 +213,14 @@ html.checkout-terminal-page body {
   @apply inline-block rounded-full border-[rgba(14,17,22,0.09)] border-t-[var(--checkout-primary,#3f5cfd)] animate-spin;
 }
 
-/** Checkout page shell — use --fill for long pay flows only. */
+/** Checkout pages — footer fixed to viewport bottom on all screens. */
 .checkout-shell {
-  @apply flex flex-col;
-}
-
-.checkout-shell--fill {
-  @apply min-h-[100dvh];
-}
-
-.checkout-shell--hug .checkout-shell__stack {
-  @apply flex w-full flex-col;
-}
-
-.checkout-shell--hug .checkout-footer {
-  @apply mt-0;
+  @apply flex min-h-[100dvh] flex-col;
+  padding-bottom: calc(3.25rem + env(safe-area-inset-bottom, 0px));
 }
 
 .checkout-footer {
-  @apply mt-auto w-full shrink-0 border-t border-[#f3f4f6] bg-white/90 backdrop-blur-sm;
+  @apply fixed bottom-0 left-0 right-0 z-20 w-full border-t border-[#f3f4f6] bg-white/95 backdrop-blur-sm;
   padding-top: 0.75rem;
   padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
 }

@@ -1,12 +1,16 @@
 "use client";
 
+import type { CheckoutApiEnvironment } from "@/lib/checkout-api-environment";
 import type { MerchantPaymentReceipt } from "@/lib/merchant-receipt";
+import { resolveMerchantImageUrl } from "@/lib/merchant-receipt";
 import {
   formatReceiptNumber,
   formatReceiptPaidDate,
 } from "@/lib/receipt-format";
+import { readStashedReceiptLogo } from "@/lib/receipt-logo-storage";
 import { useLocale, useTranslations } from "@/lib/translations";
-import { formatAmount, resolveImageUrl } from "@/lib/utils";
+import { formatAmount } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 function ReceiptHeaderLogo({
   logoUrl,
@@ -15,8 +19,12 @@ function ReceiptHeaderLogo({
   logoUrl?: string;
   merchantName: string;
 }) {
-  const resolved = resolveImageUrl(logoUrl);
-  if (resolved) {
+  if (
+    logoUrl?.startsWith("http://") ||
+    logoUrl?.startsWith("https://") ||
+    logoUrl?.startsWith("//")
+  ) {
+    const resolved = logoUrl.startsWith("//") ? `https:${logoUrl}` : logoUrl;
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
@@ -37,11 +45,26 @@ function ReceiptHeaderLogo({
 
 export function MerchantPaymentReceiptView({
   receipt,
+  environment = "live",
 }: {
   receipt: MerchantPaymentReceipt;
+  environment?: CheckoutApiEnvironment;
 }) {
   const t = useTranslations("merchantCheckout");
   const { locale } = useLocale();
+  const [logoOverride, setLogoOverride] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (receipt.logoUrl) return;
+    const stored = readStashedReceiptLogo(receipt.transferId);
+    if (stored) {
+      setLogoOverride(
+        resolveMerchantImageUrl(stored, environment) ?? stored
+      );
+    }
+  }, [receipt.logoUrl, receipt.transferId, environment]);
+
+  const displayLogoUrl = receipt.logoUrl ?? logoOverride;
   const amountDisplay =
     receipt.amount != null ? formatAmount(receipt.amount, locale) : "—";
   const paidOn =
@@ -68,7 +91,7 @@ export function MerchantPaymentReceiptView({
         <div className="merchant-receipt__title-row">
           <h1 className="merchant-receipt__title">{t("receiptPageTitle")}</h1>
           <ReceiptHeaderLogo
-            logoUrl={receipt.logoUrl}
+            logoUrl={displayLogoUrl}
             merchantName={merchantName}
           />
         </div>

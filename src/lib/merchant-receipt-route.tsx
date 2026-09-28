@@ -5,6 +5,7 @@ import {
   fetchMerchantPaymentReceipt,
   normalizeReceiptLogoHint,
   normalizeReceiptMerchantHint,
+  resolveMerchantImageUrl,
   resolveReceiptLogo,
 } from "@/lib/merchant-receipt";
 
@@ -42,19 +43,21 @@ export async function MerchantReceiptRoute({
     );
   }
 
-  const logoUrl = resolveReceiptLogo(receipt, safeLogoHint);
+  const logoPath = resolveReceiptLogo(receipt, safeLogoHint);
+  const logoUrl = resolveMerchantImageUrl(logoPath, environment);
   const serviceName =
     receipt.serviceName?.trim() || safeMerchantHint || receipt.serviceName;
 
   return (
-    <div className="checkout-shell checkout-shell--document checkout-shell--receipt checkout-experience flex flex-col bg-white text-[#1a1a1a]">
-      <main className="checkout-main mx-auto w-full max-w-[880px] flex-1 px-4 pt-6 sm:px-10">
+    <div className="checkout-shell checkout-shell--document checkout-shell--receipt checkout-experience flex flex-col overflow-x-hidden bg-white text-[#1a1a1a]">
+      <main className="checkout-main mx-auto w-full min-w-0 max-w-[1024px] flex-1 px-4 pt-6 sm:px-12">
         <MerchantPaymentReceiptView
           receipt={{
             ...receipt,
             serviceName,
-            logoUrl: logoUrl ?? receipt.logoUrl,
+            logoUrl,
           }}
+          environment={environment}
         />
       </main>
     </div>

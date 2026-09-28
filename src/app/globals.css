@@ -241,6 +241,11 @@ html:has(.checkout-shell--document) body {
   padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
 }
 
+html:has(.checkout-shell--receipt),
+html:has(.checkout-shell--receipt) body {
+  overflow-x: hidden;
+}
+
 .checkout-footer {
   @apply fixed bottom-0 left-0 right-0 z-20 w-full border-t border-[#f3f4f6] bg-white/95 backdrop-blur-sm;
   padding-top: 0.75rem;
@@ -256,7 +261,7 @@ html:has(.checkout-shell--document) body {
 }
 
 .merchant-receipt {
-  @apply flex flex-col gap-5 pb-2;
+  @apply flex min-w-0 flex-col gap-5 pb-2;
 }
 
 .merchant-receipt__actions {
@@ -285,7 +290,7 @@ html:has(.checkout-shell--document) body {
 }
 
 .merchant-receipt__logo--merchant {
-  @apply h-10 max-h-10 max-w-[160px] w-auto object-contain object-right opacity-100;
+  @apply h-11 max-h-11 max-w-[220px] w-auto object-contain object-right opacity-100;
 }
 
 .merchant-receipt__logo-fallback {
@@ -341,11 +346,11 @@ html:has(.checkout-shell--document) body {
 }
 
 .merchant-receipt__table-wrap {
-  @apply mt-8 overflow-x-auto;
+  @apply mt-8 w-full min-w-0;
 }
 
 .merchant-receipt__line-items {
-  @apply w-full min-w-[520px] border-collapse text-sm;
+  @apply w-full table-fixed border-collapse text-sm;
 }
 
 .merchant-receipt__line-items thead tr {
@@ -353,10 +358,19 @@ html:has(.checkout-shell--document) body {
 }
 
 .merchant-receipt__line-items th {
-  @apply pb-2 pr-4 text-left text-xs font-normal text-[#6b7280];
+  @apply pb-2 pr-2 text-left text-xs font-normal text-[#6b7280] sm:pr-4;
 }
 
-.merchant-receipt__line-items th:not(:first-child) {
+.merchant-receipt__line-items th:nth-child(1) {
+  @apply w-[44%];
+}
+
+.merchant-receipt__line-items th:nth-child(2) {
+  @apply w-[8%] text-right;
+}
+
+.merchant-receipt__line-items th:nth-child(3),
+.merchant-receipt__line-items th:nth-child(4) {
   @apply text-right;
 }
 
@@ -365,11 +379,11 @@ html:has(.checkout-shell--document) body {
 }
 
 .merchant-receipt__line-items td {
-  @apply py-3 pr-4 text-[#374151];
+  @apply break-words py-3 pr-2 text-[#374151] sm:pr-4;
 }
 
 .merchant-receipt__line-items td:not(:first-child) {
-  @apply text-right tabular-nums;
+  @apply text-right tabular-nums whitespace-nowrap;
 }
 
 .merchant-receipt__line-primary {
@@ -410,7 +424,7 @@ html:has(.checkout-shell--document) body {
 }
 
 .merchant-receipt__history-table {
-  @apply mt-4 w-full min-w-[520px] border-collapse text-sm;
+  @apply mt-4 w-full table-fixed border-collapse text-sm;
 }
 
 .merchant-receipt__history-table thead tr {
@@ -418,7 +432,15 @@ html:has(.checkout-shell--document) body {
 }
 
 .merchant-receipt__history-table th {
-  @apply pb-2 pr-3 text-left text-xs font-normal text-[#6b7280];
+  @apply pb-2 pr-2 text-left text-xs font-normal text-[#6b7280] sm:pr-3;
+}
+
+.merchant-receipt__history-table th:nth-child(1) {
+  @apply w-[28%];
+}
+
+.merchant-receipt__history-table th:nth-child(2) {
+  @apply w-[26%];
 }
 
 .merchant-receipt__history-table th:not(:first-child) {
@@ -430,7 +452,7 @@ html:has(.checkout-shell--document) body {
 }
 
 .merchant-receipt__history-table td {
-  @apply py-3 pr-3 text-[#374151];
+  @apply break-words py-3 pr-2 text-[#374151] sm:pr-3;
 }
 
 .merchant-receipt__history-table td:not(:first-child) {

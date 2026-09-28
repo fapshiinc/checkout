@@ -21,7 +21,6 @@ export function normalizeReceiptLogoHint(
   if (!value) return undefined;
   const trimmed = value.trim();
   if (!trimmed) return undefined;
-  if (trimmed.startsWith("/") && !trimmed.startsWith("//")) return trimmed;
   if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
     try {
       const url = new URL(trimmed);
@@ -32,7 +31,27 @@ export function normalizeReceiptLogoHint(
       return undefined;
     }
   }
+  if (trimmed.startsWith("//")) {
+    return `https:${trimmed}`;
+  }
+  if (trimmed.startsWith("/")) return trimmed;
+  if (!trimmed.includes("://")) {
+    return `/${trimmed.replace(/^\/+/, "")}`;
+  }
   return undefined;
+}
+
+export function resolveMerchantImageUrl(
+  value: string | undefined,
+  environment: CheckoutApiEnvironment = "live"
+): string | undefined {
+  const normalized = normalizeReceiptLogoHint(value);
+  if (!normalized) return undefined;
+  if (normalized.startsWith("http://") || normalized.startsWith("https://")) {
+    return normalized;
+  }
+  const base = getMerchantApiBase(environment).replace(/\/$/, "");
+  return `${base}${normalized}`;
 }
 
 export function normalizeReceiptMerchantHint(

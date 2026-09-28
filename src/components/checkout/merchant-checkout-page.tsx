@@ -17,6 +17,7 @@ import { toPaymentPhone } from "@/lib/phone";
 import { CheckoutInlineAlert } from "@/components/checkout/checkout-inline-alert";
 import type { MerchantCheckoutSession } from "@/lib/types";
 import { merchantReceiptPagePath } from "@/lib/merchant-receipt";
+import { stashReceiptLogo } from "@/lib/receipt-logo-storage";
 import { resolveMerchantSuccessRedirect } from "@/lib/merchant-redirect";
 import { useTranslations } from "@/lib/translations";
 
@@ -36,6 +37,8 @@ export function MerchantCheckoutPage({
   const appearance = session.appearance;
   const primaryColor = resolveCheckoutPrimary(appearance.primaryColor);
   const displayTitle = appearance.title?.trim() || session.serviceName;
+  const checkoutLogo =
+    appearance.logo?.trim() || session.logo?.trim() || undefined;
 
   const [phase, setPhase] = useState<CheckoutPhase>(() =>
     initialPhase(session.status)
@@ -142,6 +145,12 @@ export function MerchantCheckoutPage({
     };
   }, [phase, pollStatus]);
 
+  useEffect(() => {
+    if (phase === "success" && checkoutLogo) {
+      stashReceiptLogo(session.transferId, checkoutLogo);
+    }
+  }, [phase, checkoutLogo, session.transferId]);
+
   const resetFlow = () => {
     setPhase("idle");
     setSmsCode("");
@@ -206,7 +215,7 @@ export function MerchantCheckoutPage({
     session.transferId,
     apiEnvironment,
     {
-      logo: appearance.logo,
+      logo: checkoutLogo,
       merchantName: displayTitle,
     }
   );

@@ -19,8 +19,10 @@ Open **http://localhost:8093/{24-char-link-id}** or **http://localhost:8093/prev
 
 | Variable | Description |
 |---|---|
-| `NEXT_PUBLIC_API_URL` | Fapshi API base URL |
+| `NEXT_PUBLIC_API_URL` | Fapshi API base URL (defaults in code to staging App Engine for testing) |
 | `CHECKOUT_ORIGIN` | `Origin` header for merchant pay endpoints |
+
+**Temporary:** If `NEXT_PUBLIC_API_URL` is unset, the app calls `https://production1-dot-api-fapshi.uc.r.appspot.com`. Set `NEXT_PUBLIC_API_URL=https://api.fapshi.com` for production API.
 
 ## API (via Fapshi backend)
 

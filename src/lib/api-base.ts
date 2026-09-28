@@ -40,7 +40,8 @@ export function getFapshiApiBase(): string {
   if (resolveFapshiApiEnvironment() === "sandbox") {
     return FAPSHI_SANDBOX_API_BASE;
   }
-  return FAPSHI_PRODUCTION_API_BASE;
+  /** Temporary hosted checkout testing — revert to FAPSHI_PRODUCTION_API_BASE when done. */
+  return FAPSHI_STAGING_API_BASE;
 }
 
 export function getPublicApiBase(): string {

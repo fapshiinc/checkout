@@ -7,7 +7,6 @@ import { CheckoutBrandHeader } from "@/components/checkout/checkout-brand-header
 import { CheckoutFooter } from "@/components/checkout/checkout-footer";
 import { CheckoutPayButton } from "@/components/checkout/checkout-pay-button";
 import { CheckoutSandboxBanner } from "@/components/checkout/checkout-sandbox-banner";
-import { CheckoutSuccessPanel } from "@/components/checkout/checkout-success-panel";
 import { CheckoutStatusIcon } from "@/components/checkout/checkout-status-icon";
 import { formatCheckoutAmountValue } from "@/components/checkout/checkout-summary";
 import { PaymentProviderBadge } from "@/components/payment-provider-badge";
@@ -204,11 +203,19 @@ export function CheckoutExperience({
 
   const hugFooter = phase === "success" || phase === "failed";
 
+  useEffect(() => {
+    if (!hugFooter) return;
+    document.documentElement.classList.add("checkout-terminal-page");
+    return () => {
+      document.documentElement.classList.remove("checkout-terminal-page");
+    };
+  }, [hugFooter]);
+
   return (
     <div
       className={cn(
         "checkout-shell checkout-experience flex flex-col bg-[#f6f7f9] font-sans text-[#1a1a1a]",
-        !hugFooter && "min-h-[100dvh]",
+        !hugFooter && "checkout-shell--fill",
         hugFooter && "checkout-shell--hug"
       )}
       style={{ ["--checkout-primary" as string]: payButtonBg }}
@@ -262,14 +269,12 @@ export function CheckoutExperience({
         ) : null}
 
         <div className="overflow-hidden rounded-xl border border-[#eef0f3] bg-white shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
-          {phase !== "success" ? (
-            <CheckoutBrandHeader
-              displayTitle={displayTitle}
-              logoUrl={appearance.logo}
-              primaryColor={payButtonBg}
-              secureLabel={t("secureCheckout")}
-            />
-          ) : null}
+          <CheckoutBrandHeader
+            displayTitle={displayTitle}
+            logoUrl={appearance.logo}
+            primaryColor={payButtonBg}
+            secureLabel={t("secureCheckout")}
+          />
 
           {showSummary ? (
             <div
@@ -293,7 +298,7 @@ export function CheckoutExperience({
             </div>
           ) : null}
 
-          <div className={phase === "success" ? "" : "px-5 py-5"}>
+          <div className="px-5 py-5">
             {phase === "initiating" && (
               <div className="checkout-phase-enter flex flex-col items-center gap-3 py-8 text-center">
                 <Spinner size="lg" className="text-[#72747c]" label={t("initiating")} />
@@ -524,17 +529,48 @@ export function CheckoutExperience({
             )}
 
             {phase === "success" && (
-              <CheckoutSuccessPanel
-                firstName={firstName}
-                amountLabel={amountLabel}
-                merchantName={displayTitle}
-                email={emailTrimmed || "your email"}
-                merchantReturnUrl={successReturnUrl}
-                redirectHost={redirectHost}
-                redirectCountdown={redirectCountdown}
-                payButtonStyle={payBtnStyle}
-                onDone={onReset}
-              />
+              <section className="checkout-phase-enter space-y-4 text-center">
+                <CheckoutStatusIcon variant="success" />
+                <p className="text-base font-semibold text-emerald-700">
+                  {t("successful")}
+                </p>
+                <h2 className="text-xl font-semibold">
+                  {t("successHeading", { name: firstName })}
+                </h2>
+                <p className="text-sm text-[#72747c]">
+                  {t("successNote", {
+                    amount: amountLabel,
+                    merchant: displayTitle,
+                    email: emailTrimmed || "your email",
+                  })}
+                </p>
+                {successReturnUrl ? (
+                  <a
+                    href={successReturnUrl}
+                    className="checkout-pay-minimal block no-underline"
+                    style={payBtnStyle}
+                  >
+                    {redirectCountdown > 0
+                      ? t("returnMerchantCountdown", {
+                          seconds: redirectCountdown,
+                        })
+                      : t("returnMerchant")}
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={onReset}
+                    className="checkout-outline-btn w-full"
+                  >
+                    {t("done")}
+                  </button>
+                )}
+                {successReturnUrl ? (
+                  <p className="text-xs text-[#8b8b95]">
+                    {t("redirectingTo", { host: redirectHost })}
+                  </p>
+                ) : null}
+              </section>
             )}
 
             {phase === "failed" && (

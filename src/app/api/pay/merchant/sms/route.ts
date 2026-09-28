@@ -1,8 +1,8 @@
+import {
+  getMerchantApiBase,
+  resolveCheckoutEnvFromRequest,
+} from "@/lib/checkout-api-environment";
 import { NextResponse } from "next/server";
-
-import { getFapshiApiBase } from "@/lib/api-base";
-
-const API_BASE = getFapshiApiBase();
 
 const CHECKOUT_ORIGIN =
   process.env.CHECKOUT_ORIGIN || "https://checkout.fapshi.com";
@@ -11,7 +11,9 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const response = await fetch(`${API_BASE}/merchantpay/sms`, {
+    const apiBase = getMerchantApiBase(resolveCheckoutEnvFromRequest(request));
+
+    const response = await fetch(`${apiBase}/merchantpay/sms`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

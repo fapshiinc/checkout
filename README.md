@@ -2,7 +2,8 @@
 
 Public hosted checkout for merchant payment links (initiate-pay / `merchant-link`).
 
-Production: **https://checkout.fapshi.com/{mongoId}**
+Production: **https://checkout.fapshi.com/{mongoId}**  
+Sandbox (initiate-pay with sandbox keys): **https://checkout.fapshi.com/test/{mongoId}**
 
 ## Setup
 
@@ -37,8 +38,11 @@ Open **http://localhost:8093/{24-char-link-id}** or **http://localhost:8093/prev
 
 | Route | Description |
 |-------|-------------|
-| `/{mongoId}` | Hosted checkout session |
+| `/{mongoId}` | Hosted checkout session (live API) |
+| `/test/{mongoId}` | Sandbox checkout (`sandbox.fapshi.com` API + amber banner) |
+| `/test/payment/:id` | Legacy sandbox redirect → `/test/{id}` |
 | `/payment/:id` | Legacy redirect → `/{id}` |
+| `/test/success/:transferId` | Sandbox success page |
 | `/preview` | Dashboard iframe preview (`embed=1`, query-driven) |
 | `/success/:transferId` | Standalone success page |
 

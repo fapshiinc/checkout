@@ -1,4 +1,8 @@
-import { getFapshiApiBase } from "./api-base";
+import type { CheckoutApiEnvironment } from "./checkout-api-environment";
+import {
+  checkoutEnvRequestHeaders,
+  getMerchantApiBase,
+} from "./checkout-api-environment";
 import {
   resolveCheckoutClosedReason,
   type CheckoutClosedReason,
@@ -15,8 +19,6 @@ import type {
   TransactionStatusResponse,
 } from "./types";
 
-const API_BASE = getFapshiApiBase();
-
 export function isValidMerchantCheckoutId(id: string): boolean {
   return /^[a-f\d]{24}$/i.test(id);
 }
@@ -32,10 +34,12 @@ export type MerchantCheckoutFetchResult =
     };
 
 export async function fetchMerchantCheckoutSession(
-  mongoId: string
+  mongoId: string,
+  environment: CheckoutApiEnvironment = "live"
 ): Promise<MerchantCheckoutFetchResult> {
+  const apiBase = getMerchantApiBase(environment);
   const response = await fetch(
-    `${API_BASE}/merchant-link/${encodeURIComponent(mongoId)}`,
+    `${apiBase}/merchant-link/${encodeURIComponent(mongoId)}`,
     { cache: "no-store" }
   );
 
@@ -79,11 +83,15 @@ export async function fetchMerchantCheckoutSession(
 }
 
 export async function payMerchantWithMomo(
-  payload: MerchantPayMomoPayload
+  payload: MerchantPayMomoPayload,
+  environment: CheckoutApiEnvironment = "live"
 ): Promise<MerchantPayMomoResponse> {
   const response = await fetch("/api/pay/merchant/momo", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      ...checkoutEnvRequestHeaders(environment),
+    },
     body: JSON.stringify(payload),
   });
 
@@ -100,11 +108,15 @@ export async function payMerchantWithMomo(
 
 export async function submitMerchantSmsCode(
   transferId: string,
-  code: string
+  code: string,
+  environment: CheckoutApiEnvironment = "live"
 ): Promise<void> {
   const response = await fetch("/api/pay/merchant/sms", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      ...checkoutEnvRequestHeaders(environment),
+    },
     body: JSON.stringify({ transferId, code }),
   });
 
@@ -116,14 +128,16 @@ export async function submitMerchantSmsCode(
 
 /** Merchant MoMo payment status (polled while user approves on phone). */
 export async function fetchMerchantPaymentStatus(
-  transferId: string
+  transferId: string,
+  environment: CheckoutApiEnvironment = "live"
 ): Promise<TransactionStatusResponse> {
+  const apiBase = getMerchantApiBase(environment);
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 45 * 1000);
 
   try {
     const response = await fetch(
-      `${API_BASE}/merchant-pay-status/${encodeURIComponent(transferId)}`,
+      `${apiBase}/merchantpay/status/${encodeURIComponent(transferId)}`,
       {
         headers: { "Content-Type": "application/json" },
         cache: "no-store",

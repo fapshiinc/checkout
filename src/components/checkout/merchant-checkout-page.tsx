@@ -12,15 +12,11 @@ import {
   payMerchantWithMomo,
   submitMerchantSmsCode,
 } from "@/lib/api";
-import { resolveFapshiApiEnvironment } from "@/lib/api-base";
+import type { CheckoutApiEnvironment } from "@/lib/checkout-api-environment";
 import { toPaymentPhone } from "@/lib/phone";
 import { CheckoutInlineAlert } from "@/components/checkout/checkout-inline-alert";
 import type { MerchantCheckoutSession } from "@/lib/types";
 import { useTranslations } from "@/lib/translations";
-
-function checkoutEnvironment(): "sandbox" | "live" {
-  return resolveFapshiApiEnvironment() === "sandbox" ? "sandbox" : "live";
-}
 
 function initialPhase(status: string): CheckoutPhase {
   if (status === "PENDING") return "prompt";
@@ -29,8 +25,10 @@ function initialPhase(status: string): CheckoutPhase {
 
 export function MerchantCheckoutPage({
   session,
+  apiEnvironment = "live",
 }: {
   session: MerchantCheckoutSession;
+  apiEnvironment?: CheckoutApiEnvironment;
 }) {
   const t = useTranslations("merchantCheckout");
   const appearance = session.appearance;
@@ -81,7 +79,10 @@ export function MerchantCheckoutPage({
 
   const pollStatus = useCallback(async () => {
     try {
-      const status = await fetchMerchantPaymentStatus(session.transferId);
+      const status = await fetchMerchantPaymentStatus(
+        session.transferId,
+        apiEnvironment
+      );
       if (status.status === "SUCCESSFUL") {
         setPhase("success");
         return true;
@@ -94,7 +95,7 @@ export function MerchantCheckoutPage({
       /* keep polling until timeout */
     }
     return false;
-  }, [session.transferId]);
+  }, [session.transferId, apiEnvironment]);
 
   useEffect(() => {
     if (phase !== "prompt") return;
@@ -135,12 +136,15 @@ export function MerchantCheckoutPage({
     try {
       const payerEmail = session.payerEmail?.trim() || email.trim();
       const clientName = session.payerName?.trim() || name.trim() || "Customer";
-      const res = await payMerchantWithMomo({
-        transferId: session.transferId,
-        phone: toPaymentPhone(phone),
-        clientName,
-        email: payerEmail,
-      });
+      const res = await payMerchantWithMomo(
+        {
+          transferId: session.transferId,
+          phone: toPaymentPhone(phone),
+          clientName,
+          email: payerEmail,
+        },
+        apiEnvironment
+      );
 
       const msg = (res.message || "").toLowerCase();
       if (msg.includes("sms") || msg.includes("code")) {
@@ -166,7 +170,11 @@ export function MerchantCheckoutPage({
     setError(null);
     setSmsSubmitting(true);
     try {
-      await submitMerchantSmsCode(session.transferId, smsCode.trim());
+      await submitMerchantSmsCode(
+        session.transferId,
+        smsCode.trim(),
+        apiEnvironment
+      );
       setPhase("prompt");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Invalid code");
@@ -202,7 +210,7 @@ export function MerchantCheckoutPage({
       <CheckoutExperience
         appearance={appearance}
         primaryColor={primaryColor}
-        environment={checkoutEnvironment()}
+        environment={apiEnvironment}
         amount={session.amount}
         displayTitle={displayTitle}
         message={appearance.message || session.message}

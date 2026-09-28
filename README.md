@@ -26,7 +26,7 @@ Open **http://localhost:8093/{24-char-link-id}** or **http://localhost:8093/prev
 
 | Step | Endpoint |
 |------|----------|
-| Load link | `GET /merchant-link/:mongoId` |
+| Load link | `GET /merchant-link/:mongoId` (includes service `logo` and `color` when set) |
 | Pay MoMo | `POST /merchantpay/momo` (proxied at `/api/pay/merchant/momo`) |
 | Poll | `GET /merchant-pay-status/:transId` |
 | SMS | `POST /merchantpay/sms` (proxied at `/api/pay/merchant/sms`) |

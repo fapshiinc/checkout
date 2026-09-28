@@ -237,6 +237,10 @@ html:has(.checkout-shell--document) body {
   padding-bottom: calc(3.25rem + env(safe-area-inset-bottom, 0px));
 }
 
+.checkout-shell--receipt .checkout-main {
+  padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
+}
+
 .checkout-footer {
   @apply fixed bottom-0 left-0 right-0 z-20 w-full border-t border-[#f3f4f6] bg-white/95 backdrop-blur-sm;
   padding-top: 0.75rem;
@@ -278,6 +282,10 @@ html:has(.checkout-shell--document) body {
 
 .merchant-receipt__logo {
   @apply mt-1 h-4 w-auto shrink-0 opacity-90;
+}
+
+.merchant-receipt__logo--merchant {
+  @apply h-10 max-h-10 max-w-[160px] w-auto object-contain object-right opacity-100;
 }
 
 .merchant-receipt__meta {
@@ -418,11 +426,7 @@ html:has(.checkout-shell--document) body {
 }
 
 .merchant-receipt__legal {
-  @apply mt-16 flex items-end justify-between gap-4 border-t border-[#e5e7eb] pt-6 text-xs text-[#6b7280];
-}
-
-.merchant-receipt__page {
-  @apply shrink-0;
+  @apply mt-16 border-t border-[#e5e7eb] pt-6 text-xs text-[#6b7280];
 }
 
 @media print {
@@ -437,9 +441,6 @@ html:has(.checkout-shell--document) body {
     background: #fff !important;
   }
 
-  .merchant-receipt__page {
-    display: block !important;
-  }
 }
 
 .checkout-field {

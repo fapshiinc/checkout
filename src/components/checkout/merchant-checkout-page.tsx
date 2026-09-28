@@ -204,7 +204,8 @@ export function MerchantCheckoutPage({
 
   const receiptHref = merchantReceiptPagePath(
     session.transferId,
-    apiEnvironment
+    apiEnvironment,
+    { logo: appearance.logo }
   );
 
   return (

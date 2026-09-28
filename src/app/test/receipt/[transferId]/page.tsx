@@ -2,9 +2,18 @@ import { MerchantReceiptRoute } from "@/lib/merchant-receipt-route";
 
 export default async function SandboxMerchantReceiptPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ transferId: string }>;
+  searchParams: Promise<{ logo?: string }>;
 }) {
   const { transferId } = await params;
-  return <MerchantReceiptRoute transferId={transferId} environment="sandbox" />;
+  const { logo } = await searchParams;
+  return (
+    <MerchantReceiptRoute
+      transferId={transferId}
+      environment="sandbox"
+      logoHint={logo}
+    />
+  );
 }

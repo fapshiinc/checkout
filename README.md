@@ -4,7 +4,7 @@ Public hosted checkout for merchant payment links (initiate-pay / `merchant-link
 
 Production: **https://checkout.fapshi.com/{mongoId}**  
 Sandbox (initiate-pay with sandbox keys): **https://checkout.fapshi.com/test/{mongoId}**  
-Sandbox routes call **`https://sandbox.fapshi.com`** for `merchant-link`, `merchantpay/*`, and status (not `NEXT_PUBLIC_API_URL` / staging).
+Sandbox routes call **`https://sandbox.fapshi.com`** for `merchant-link`, `merchantpay/*`, and status. Live routes use **`https://api.fapshi.com`** (or `NEXT_PUBLIC_API_URL`).
 
 ## Setup
 
@@ -21,10 +21,8 @@ Open **http://localhost:8093/{24-char-link-id}** or **http://localhost:8093/prev
 
 | Variable | Description |
 |---|---|
-| `NEXT_PUBLIC_API_URL` | Fapshi API base URL (defaults in code to staging App Engine for testing) |
+| `NEXT_PUBLIC_API_URL` | Optional override for live API (default: `https://api.fapshi.com`) |
 | `CHECKOUT_ORIGIN` | `Origin` header for merchant pay endpoints |
-
-**Temporary:** If `NEXT_PUBLIC_API_URL` is unset, the app calls `https://production1-dot-api-fapshi.uc.r.appspot.com`. Set `NEXT_PUBLIC_API_URL=https://api.fapshi.com` for production API.
 
 ## API (via Fapshi backend)
 

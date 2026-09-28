@@ -13,10 +13,6 @@ export const FAPSHI_PRODUCTION_API_BASE = "https://api.fapshi.com";
 export const FAPSHI_SANDBOX_API_BASE = "https://sandbox.fapshi.com";
 export const FAPSHI_LIVE_API_BASE = "https://live.fapshi.com";
 
-/** Temporary hosted API for checkout testing (App Engine staging). */
-export const FAPSHI_STAGING_API_BASE =
-  "https://production1-dot-api-fapshi.uc.r.appspot.com";
-
 export type FapshiApiEnvironment = "live" | "sandbox";
 
 export function resolveFapshiApiEnvironment(): FapshiApiEnvironment {
@@ -40,8 +36,7 @@ export function getFapshiApiBase(): string {
   if (resolveFapshiApiEnvironment() === "sandbox") {
     return FAPSHI_SANDBOX_API_BASE;
   }
-  /** Temporary hosted checkout testing — revert to FAPSHI_PRODUCTION_API_BASE when done. */
-  return FAPSHI_STAGING_API_BASE;
+  return FAPSHI_PRODUCTION_API_BASE;
 }
 
 export function getPublicApiBase(): string {

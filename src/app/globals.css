@@ -314,7 +314,7 @@ html:has(.checkout-shell--receipt) body {
 }
 
 .merchant-receipt__headline {
-  @apply text-lg font-semibold tracking-tight text-[#0a0a0a] sm:text-xl;
+  @apply text-sm font-semibold leading-snug tracking-tight text-[#0a0a0a] sm:text-base;
 }
 
 .merchant-receipt__summary-amount {

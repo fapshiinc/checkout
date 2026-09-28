@@ -160,12 +160,15 @@ export async function fetchMerchantPaymentReceipt(
   };
 }
 
+/** Keep ISO-parseable values for display formatting in the receipt UI. */
 function formatReceiptDate(value: unknown): string | undefined {
   if (!value) return undefined;
-  if (value instanceof Date) return value.toLocaleString("en-GB");
+  if (value instanceof Date) return value.toISOString();
   if (typeof value === "string") {
-    const d = new Date(value);
-    return Number.isNaN(d.getTime()) ? value : d.toLocaleString("en-GB");
+    const trimmed = value.trim();
+    if (!trimmed) return undefined;
+    const d = new Date(trimmed);
+    return Number.isNaN(d.getTime()) ? trimmed : d.toISOString();
   }
   return undefined;
 }

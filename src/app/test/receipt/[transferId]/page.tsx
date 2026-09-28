@@ -5,15 +5,16 @@ export default async function SandboxMerchantReceiptPage({
   searchParams,
 }: {
   params: Promise<{ transferId: string }>;
-  searchParams: Promise<{ logo?: string }>;
+  searchParams: Promise<{ logo?: string; merchant?: string }>;
 }) {
   const { transferId } = await params;
-  const { logo } = await searchParams;
+  const { logo, merchant } = await searchParams;
   return (
     <MerchantReceiptRoute
       transferId={transferId}
       environment="sandbox"
       logoHint={logo}
+      merchantHint={merchant}
     />
   );
 }

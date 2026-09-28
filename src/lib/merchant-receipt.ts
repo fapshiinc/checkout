@@ -35,17 +35,29 @@ export function normalizeReceiptLogoHint(
   return undefined;
 }
 
+export function normalizeReceiptMerchantHint(
+  value: string | undefined | null
+): string | undefined {
+  if (!value) return undefined;
+  const trimmed = value.trim().slice(0, 120);
+  return trimmed || undefined;
+}
+
 export function merchantReceiptPagePath(
   transferId: string,
   environment: CheckoutApiEnvironment = "live",
-  options?: { logo?: string | null }
+  options?: { logo?: string | null; merchantName?: string | null }
 ): string {
   const id = encodeURIComponent(transferId);
   const base =
     environment === "sandbox" ? `/test/receipt/${id}` : `/receipt/${id}`;
+  const params = new URLSearchParams();
   const logo = normalizeReceiptLogoHint(options?.logo);
-  if (!logo) return base;
-  return `${base}?logo=${encodeURIComponent(logo)}`;
+  const merchant = normalizeReceiptMerchantHint(options?.merchantName);
+  if (logo) params.set("logo", logo);
+  if (merchant) params.set("merchant", merchant);
+  const query = params.toString();
+  return query ? `${base}?${query}` : base;
 }
 
 export function resolveReceiptLogo(

@@ -288,6 +288,18 @@ html:has(.checkout-shell--document) body {
   @apply h-10 max-h-10 max-w-[160px] w-auto object-contain object-right opacity-100;
 }
 
+.merchant-receipt__logo-fallback {
+  @apply flex max-w-[200px] items-center justify-end gap-2 text-right;
+}
+
+.merchant-receipt__logo-mark {
+  @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#e5e7eb] bg-[#f9fafb] text-sm font-semibold text-[#1a1a1a];
+}
+
+.merchant-receipt__logo-text {
+  @apply truncate text-sm font-semibold text-[#1a1a1a];
+}
+
 .merchant-receipt__meta {
   @apply mt-8 space-y-1.5 text-sm;
 }

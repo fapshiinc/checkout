@@ -4,6 +4,7 @@ import type { CheckoutApiEnvironment } from "@/lib/checkout-api-environment";
 import {
   fetchMerchantPaymentReceipt,
   normalizeReceiptLogoHint,
+  normalizeReceiptMerchantHint,
   resolveReceiptLogo,
 } from "@/lib/merchant-receipt";
 
@@ -11,13 +12,16 @@ export async function MerchantReceiptRoute({
   transferId,
   environment,
   logoHint,
+  merchantHint,
 }: {
   transferId: string;
   environment: CheckoutApiEnvironment;
   logoHint?: string | null;
+  merchantHint?: string | null;
 }) {
   const receipt = await fetchMerchantPaymentReceipt(transferId, environment);
   const safeLogoHint = normalizeReceiptLogoHint(logoHint);
+  const safeMerchantHint = normalizeReceiptMerchantHint(merchantHint);
 
   if (!receipt || receipt.status !== "SUCCESSFUL") {
     return (
@@ -39,12 +43,18 @@ export async function MerchantReceiptRoute({
   }
 
   const logoUrl = resolveReceiptLogo(receipt, safeLogoHint);
+  const serviceName =
+    receipt.serviceName?.trim() || safeMerchantHint || receipt.serviceName;
 
   return (
     <div className="checkout-shell checkout-shell--document checkout-shell--receipt checkout-experience flex flex-col bg-white text-[#1a1a1a]">
       <main className="checkout-main mx-auto w-full max-w-[880px] flex-1 px-4 pt-6 sm:px-10">
         <MerchantPaymentReceiptView
-          receipt={{ ...receipt, logoUrl: logoUrl ?? receipt.logoUrl }}
+          receipt={{
+            ...receipt,
+            serviceName,
+            logoUrl: logoUrl ?? receipt.logoUrl,
+          }}
         />
       </main>
     </div>

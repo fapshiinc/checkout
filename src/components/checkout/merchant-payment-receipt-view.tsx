@@ -7,14 +7,13 @@ import {
 } from "@/lib/receipt-format";
 import { useLocale, useTranslations } from "@/lib/translations";
 import { formatAmount, resolveImageUrl } from "@/lib/utils";
-import Image from "next/image";
 
 function ReceiptHeaderLogo({
   logoUrl,
   merchantName,
 }: {
   logoUrl?: string;
-  merchantName?: string;
+  merchantName: string;
 }) {
   const resolved = resolveImageUrl(logoUrl);
   if (resolved) {
@@ -22,20 +21,17 @@ function ReceiptHeaderLogo({
       // eslint-disable-next-line @next/next/no-img-element
       <img
         src={resolved}
-        alt={merchantName?.trim() || "Merchant"}
+        alt={merchantName}
         className="merchant-receipt__logo merchant-receipt__logo--merchant"
       />
     );
   }
+  const initial = merchantName.slice(0, 1).toUpperCase();
   return (
-    <Image
-      src="/logos/logoBlack.svg"
-      alt="Fapshi"
-      width={72}
-      height={16}
-      className="merchant-receipt__logo"
-      priority
-    />
+    <span className="merchant-receipt__logo-fallback" aria-hidden>
+      <span className="merchant-receipt__logo-mark">{initial}</span>
+      <span className="merchant-receipt__logo-text">{merchantName}</span>
+    </span>
   );
 }
 
@@ -52,9 +48,9 @@ export function MerchantPaymentReceiptView({
     formatReceiptPaidDate(receipt.dateConfirmed, locale) ??
     formatReceiptPaidDate(receipt.dateInitiated, locale);
   const receiptNumber = formatReceiptNumber(receipt.transferId);
-  const lineDescription = receipt.serviceName
-    ? t("receiptLineItemDesc", { merchant: receipt.serviceName })
-    : t("receiptLineItemDefault");
+  const merchantName =
+    receipt.serviceName?.trim() || t("receiptMerchantFallback");
+  const lineDescription = t("receiptLineItemDesc", { merchant: merchantName });
 
   return (
     <div className="merchant-receipt">
@@ -73,7 +69,7 @@ export function MerchantPaymentReceiptView({
           <h1 className="merchant-receipt__title">{t("receiptPageTitle")}</h1>
           <ReceiptHeaderLogo
             logoUrl={receipt.logoUrl}
-            merchantName={receipt.serviceName}
+            merchantName={merchantName}
           />
         </div>
 
@@ -99,12 +95,7 @@ export function MerchantPaymentReceiptView({
             <h2 className="merchant-receipt__party-heading">
               {t("receiptFromHeading")}
             </h2>
-            <p className="merchant-receipt__party-name">
-              {receipt.serviceName?.trim() || t("receiptFromName")}
-            </p>
-            <p className="merchant-receipt__party-line">
-              {t("receiptProcessedBy")}
-            </p>
+            <p className="merchant-receipt__party-name">{merchantName}</p>
           </div>
           <div>
             <h2 className="merchant-receipt__party-heading">
@@ -194,9 +185,11 @@ export function MerchantPaymentReceiptView({
           </table>
         </section>
 
-        <footer className="merchant-receipt__legal">
-          <p>{t("receiptLegalEntity")}</p>
-        </footer>
+        {receipt.serviceName?.trim() ? (
+          <footer className="merchant-receipt__legal">
+            <p>{merchantName}</p>
+          </footer>
+        ) : null}
       </article>
     </div>
   );

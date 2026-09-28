@@ -44,6 +44,8 @@ Open **http://localhost:8093/{24-char-link-id}** or **http://localhost:8093/prev
 | `/test/payment/:id` | Legacy sandbox redirect → `/test/{id}` |
 | `/payment/:id` | Legacy redirect → `/{id}` |
 | `/test/success/:transferId` | Sandbox success page |
+| `/receipt/:transferId` | Payment receipt (print) — live |
+| `/test/receipt/:transferId` | Payment receipt — sandbox |
 | `/preview` | Dashboard iframe preview (`embed=1`, query-driven) |
 | `/success/:transferId` | Standalone success page |
 

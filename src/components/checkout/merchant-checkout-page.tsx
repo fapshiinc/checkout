@@ -16,6 +16,7 @@ import type { CheckoutApiEnvironment } from "@/lib/checkout-api-environment";
 import { toPaymentPhone } from "@/lib/phone";
 import { CheckoutInlineAlert } from "@/components/checkout/checkout-inline-alert";
 import type { MerchantCheckoutSession } from "@/lib/types";
+import { merchantReceiptPagePath } from "@/lib/merchant-receipt";
 import { resolveMerchantSuccessRedirect } from "@/lib/merchant-redirect";
 import { useTranslations } from "@/lib/translations";
 
@@ -56,7 +57,6 @@ export function MerchantCheckoutPage({
   const [redirectCountdown, setRedirectCountdown] = useState(5);
   const [error, setError] = useState<string | null>(null);
   const [smsSubmitting, setSmsSubmitting] = useState(false);
-  const [confirmChecking, setConfirmChecking] = useState(false);
   const [successRedirect, setSuccessRedirect] = useState<string | null>(() =>
     resolveMerchantSuccessRedirect(session, session.transferId)
   );
@@ -202,24 +202,10 @@ export function MerchantCheckoutPage({
     }
   };
 
-  const handleConfirmed = async () => {
-    setError(null);
-    setConfirmChecking(true);
-    try {
-      /** One status call can return PENDING while the wallet is still processing. */
-      const maxChecks = 8;
-      for (let i = 0; i < maxChecks; i++) {
-        const done = await pollStatus();
-        if (done) return;
-        if (i < maxChecks - 1) {
-          await new Promise((resolve) => setTimeout(resolve, 4000));
-        }
-      }
-      setError(t("stillPendingConfirm"));
-    } finally {
-      setConfirmChecking(false);
-    }
-  };
+  const receiptHref = merchantReceiptPagePath(
+    session.transferId,
+    apiEnvironment
+  );
 
   return (
     <>
@@ -252,10 +238,9 @@ export function MerchantCheckoutPage({
         onPay={handlePay}
         onCancel={resetFlow}
         onSmsSubmit={handleSmsSubmit}
-        onConfirmed={handleConfirmed}
         onReset={resetFlow}
+        receiptHref={receiptHref}
         smsSubmitting={smsSubmitting}
-        confirmChecking={confirmChecking}
       />
     </>
   );

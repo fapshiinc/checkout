@@ -116,7 +116,6 @@ export function CheckoutDashboardPreview() {
       onPay={() => {}}
       onCancel={() => {}}
       onSmsSubmit={() => {}}
-      onConfirmed={() => {}}
       onReset={() => {}}
       previewMode
       embed={embed}

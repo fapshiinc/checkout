@@ -84,12 +84,11 @@ export interface CheckoutExperienceProps {
   onPay: () => void;
   onCancel: () => void;
   onSmsSubmit: () => void;
-  onConfirmed: () => void;
   onReset: () => void;
+  receiptHref?: string | null;
   onPayWithCard?: () => void;
   cardLoading?: boolean;
   smsSubmitting?: boolean;
-  confirmChecking?: boolean;
   showLocaleToggle?: boolean;
   /** Dashboard embed: same UI, no payment actions. */
   previewMode?: boolean;
@@ -122,12 +121,11 @@ export function CheckoutExperience({
   onPay,
   onCancel,
   onSmsSubmit,
-  onConfirmed,
   onReset,
+  receiptHref,
   onPayWithCard,
   cardLoading,
   smsSubmitting = false,
-  confirmChecking = false,
   showLocaleToggle = true,
   previewMode = false,
   embed = false,
@@ -480,24 +478,16 @@ export function CheckoutExperience({
                   <Spinner size="sm" label="" />
                   {t("pollNote", { wallet: pollWalletLabel || walletName })}
                 </div>
-                <div className="flex flex-col gap-2 sm:flex-row">
-                  <button
-                    type="button"
-                    onClick={onCancel}
-                    className="checkout-outline-btn flex-1"
-                  >
-                    {t("cancel")}
-                  </button>
-                  <CheckoutPayButton
-                    loading={confirmChecking}
-                    loadingLabel={t("checkingPayment")}
-                    onClick={onConfirmed}
-                    style={payBtnStyle}
-                    className="flex-1"
-                  >
-                    {t("confirmed")}
-                  </CheckoutPayButton>
-                </div>
+                <p className="text-center text-xs leading-relaxed text-[#72747c]">
+                  {t("pollAutoNote")}
+                </p>
+                <button
+                  type="button"
+                  onClick={onCancel}
+                  className="checkout-outline-btn w-full"
+                >
+                  {t("cancel")}
+                </button>
               </section>
             )}
 
@@ -517,6 +507,16 @@ export function CheckoutExperience({
                     email: emailTrimmed || "your email",
                   })}
                 </p>
+                {receiptHref ? (
+                  <a
+                    href={receiptHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block text-sm font-semibold text-[#3f5cfd] underline-offset-2 hover:underline"
+                  >
+                    {t("downloadReceipt")}
+                  </a>
+                ) : null}
                 {successReturnUrl ? (
                   <a
                     href={successReturnUrl}

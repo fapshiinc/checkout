@@ -13,7 +13,6 @@ export function MerchantPaymentReceiptView({
   receipt,
 }: {
   receipt: MerchantPaymentReceipt;
-  environment?: CheckoutApiEnvironment;
 }) {
   const t = useTranslations("merchantCheckout");
   const { locale } = useLocale();

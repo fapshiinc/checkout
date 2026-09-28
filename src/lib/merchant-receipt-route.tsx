@@ -57,7 +57,6 @@ export async function MerchantReceiptRoute({
             serviceName,
             logoUrl,
           }}
-          environment={environment}
         />
       </main>
     </div>

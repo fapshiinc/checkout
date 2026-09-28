@@ -149,6 +149,7 @@
     "successNote": "{amount} envoyés à {merchant}. Un reçu est en route vers {email}.",
     "downloadReceipt": "Voir le reçu de paiement",
     "receiptPageTitle": "Reçu",
+    "receiptSheetLabel": "Reçu de paiement {number} pour {merchant}",
     "receiptNumberLabel": "Numéro de reçu",
     "receiptTransferId": "ID de transaction",
     "receiptPaidOn": "Date de paiement",

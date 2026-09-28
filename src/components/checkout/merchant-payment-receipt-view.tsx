@@ -6,6 +6,7 @@ import {
   formatReceiptPaidDate,
 } from "@/lib/receipt-format";
 import { useLocale, useTranslations } from "@/lib/translations";
+import { ReceiptDocumentTitle } from "@/components/checkout/receipt-document-title";
 import { formatAmount } from "@/lib/utils";
 import Image from "next/image";
 
@@ -45,6 +46,10 @@ export function MerchantPaymentReceiptView({
 
   return (
     <div className="merchant-receipt">
+      <ReceiptDocumentTitle
+        merchantName={merchantName}
+        receiptNumber={receiptNumber}
+      />
       <div className="merchant-receipt__actions no-print">
         <button
           type="button"
@@ -55,10 +60,21 @@ export function MerchantPaymentReceiptView({
         </button>
       </div>
 
-      <article className="merchant-receipt__sheet">
+      <article
+        className="merchant-receipt__sheet"
+        aria-label={t("receiptSheetLabel", {
+          number: receiptNumber,
+          merchant: merchantName,
+        })}
+      >
         <header className="merchant-receipt__header">
           <div className="merchant-receipt__title-row">
-            <h1 className="merchant-receipt__title">{t("receiptPageTitle")}</h1>
+            <div>
+              <h1 className="merchant-receipt__title">{t("receiptPageTitle")}</h1>
+              <p className="merchant-receipt__subtitle">
+                {receiptNumber} · {merchantName}
+              </p>
+            </div>
             <Image
               src="/logos/logoBlack.svg"
               alt="Fapshi"

@@ -149,6 +149,7 @@
     "successNote": "{amount} paid to {merchant}. A receipt is on its way to {email}.",
     "downloadReceipt": "View payment receipt",
     "receiptPageTitle": "Receipt",
+    "receiptSheetLabel": "Payment receipt {number} for {merchant}",
     "receiptNumberLabel": "Receipt number",
     "receiptTransferId": "Transaction ID",
     "receiptPaidOn": "Date paid",

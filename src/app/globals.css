@@ -289,6 +289,10 @@ html:has(.checkout-shell--receipt) body {
   @apply text-2xl font-semibold leading-tight tracking-tight text-[#0a0a0a];
 }
 
+.merchant-receipt__subtitle {
+  @apply mt-1 text-sm font-medium text-[#72747c];
+}
+
 .merchant-receipt__logo {
   @apply mt-1 h-5 w-auto shrink-0;
 }

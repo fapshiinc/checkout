@@ -15,7 +15,7 @@ export async function MerchantReceiptRoute({
 
   if (!receipt || receipt.status !== "SUCCESSFUL") {
     return (
-      <div className="checkout-shell checkout-shell--document checkout-experience flex flex-col bg-[#f6f7f9] text-[#1a1a1a]">
+      <div className="checkout-shell checkout-shell--document checkout-experience flex flex-col bg-white text-[#1a1a1a]">
         <main className="checkout-main mx-auto w-full max-w-[420px] flex-1 px-4 pt-10 text-center">
           <h1 className="text-lg font-semibold">Receipt unavailable</h1>
           <p className="mt-2 text-sm text-[#72747c]">
@@ -34,8 +34,8 @@ export async function MerchantReceiptRoute({
   }
 
   return (
-    <div className="checkout-shell checkout-shell--document checkout-experience flex flex-col bg-[#f6f7f9] text-[#1a1a1a]">
-      <main className="checkout-main mx-auto w-full max-w-[480px] flex-1 px-4 pt-4">
+    <div className="checkout-shell checkout-shell--document checkout-experience flex flex-col bg-white text-[#1a1a1a]">
+      <main className="checkout-main mx-auto w-full max-w-[680px] flex-1 px-4 pt-6 sm:px-8">
         <MerchantPaymentReceiptView receipt={receipt} />
       </main>
       <CheckoutFooter />

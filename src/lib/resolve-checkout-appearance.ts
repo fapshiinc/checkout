@@ -24,6 +24,9 @@ export type MerchantLinkPayload = Partial<MerchantCheckoutSession> & {
   email?: string;
   clientName?: string;
   name?: string;
+  successRedirect?: string | null;
+  successRedirectUrl?: string | null;
+  redirectOnSuccess?: string | null;
 };
 
 function serviceBrandingFromLink(

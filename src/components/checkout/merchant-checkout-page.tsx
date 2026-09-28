@@ -16,6 +16,7 @@ import type { CheckoutApiEnvironment } from "@/lib/checkout-api-environment";
 import { toPaymentPhone } from "@/lib/phone";
 import { CheckoutInlineAlert } from "@/components/checkout/checkout-inline-alert";
 import type { MerchantCheckoutSession } from "@/lib/types";
+import { resolveMerchantSuccessRedirect } from "@/lib/merchant-redirect";
 import { useTranslations } from "@/lib/translations";
 
 function initialPhase(status: string): CheckoutPhase {
@@ -56,26 +57,31 @@ export function MerchantCheckoutPage({
   const [error, setError] = useState<string | null>(null);
   const [smsSubmitting, setSmsSubmitting] = useState(false);
   const [confirmChecking, setConfirmChecking] = useState(false);
+  const [successRedirect, setSuccessRedirect] = useState<string | null>(() =>
+    resolveMerchantSuccessRedirect(session, session.transferId)
+  );
+
+  const checkoutReturnUrl = session.redirect ?? null;
 
   useEffect(() => {
     return applyCheckoutBranding(appearance);
   }, [appearance]);
 
   useEffect(() => {
-    if (phase !== "success" || !session.redirect) return;
+    if (phase !== "success" || !successRedirect) return;
     setRedirectCountdown(5);
     const interval = setInterval(() => {
       setRedirectCountdown((n) => {
         if (n <= 1) {
           clearInterval(interval);
-          if (session.redirect) window.location.href = session.redirect;
+          if (successRedirect) window.location.href = successRedirect;
           return 0;
         }
         return n - 1;
       });
     }, 1000);
     return () => clearInterval(interval);
-  }, [phase, session.redirect]);
+  }, [phase, successRedirect]);
 
   const pollStatus = useCallback(async () => {
     try {
@@ -84,6 +90,18 @@ export function MerchantCheckoutPage({
         apiEnvironment
       );
       if (status.status === "SUCCESSFUL") {
+        const fromStatus =
+          status.redirect?.trim() ||
+          status.redirectUrl?.trim() ||
+          null;
+        if (fromStatus) {
+          setSuccessRedirect(
+            resolveMerchantSuccessRedirect(
+              { redirect: fromStatus, successRedirect: fromStatus },
+              session.transferId
+            )
+          );
+        }
         setPhase("success");
         return true;
       }
@@ -95,7 +113,7 @@ export function MerchantCheckoutPage({
       /* keep polling until timeout */
     }
     return false;
-  }, [session.transferId, apiEnvironment]);
+  }, [session.transferId, session.redirect, apiEnvironment]);
 
   useEffect(() => {
     if (phase !== "prompt") return;
@@ -216,7 +234,8 @@ export function MerchantCheckoutPage({
         message={appearance.message || session.message}
         payerEmail={session.payerEmail}
         payerName={session.payerName}
-        redirectUrl={session.redirect}
+        redirectUrl={checkoutReturnUrl}
+        successRedirectUrl={successRedirect}
         createdAt={session.createdAt}
         phase={phase}
         name={name}

@@ -63,7 +63,10 @@ export interface CheckoutExperienceProps {
   message?: string;
   payerEmail?: string;
   payerName?: string;
+  /** Merchant URL from initiate-pay (CREATED) — back link while paying. */
   redirectUrl?: string | null;
+  /** Post-payment return URL (SUCCESSFUL) — Done button + auto-redirect. */
+  successRedirectUrl?: string | null;
   createdAt?: string;
   cardAllowed?: boolean;
   phase: CheckoutPhase;
@@ -103,6 +106,7 @@ export function CheckoutExperience({
   payerEmail,
   payerName,
   redirectUrl,
+  successRedirectUrl,
   phase,
   name,
   email,
@@ -179,8 +183,9 @@ export function CheckoutExperience({
   const firstName =
     effectiveName.split(/\s+/)[0] || (activeLocale === "fr" ? "à vous" : "friend");
 
-  const redirectHost = redirectUrl
-    ? redirectUrl.replace(/^https?:\/\//, "").split("/")[0]
+  const merchantReturnUrl = successRedirectUrl ?? redirectUrl;
+  const redirectHost = merchantReturnUrl
+    ? merchantReturnUrl.replace(/^https?:\/\//, "").split("/")[0]
     : "";
 
   const webBack = parseWebBackUrl(redirectUrl);
@@ -534,9 +539,9 @@ export function CheckoutExperience({
                     email: emailTrimmed || "your email",
                   })}
                 </p>
-                {redirectUrl ? (
+                {merchantReturnUrl ? (
                   <a
-                    href={redirectUrl}
+                    href={merchantReturnUrl}
                     className="checkout-pay-minimal block no-underline"
                     style={payBtnStyle}
                   >
@@ -555,7 +560,7 @@ export function CheckoutExperience({
                     {t("done")}
                   </button>
                 )}
-                {redirectUrl ? (
+                {merchantReturnUrl ? (
                   <p className="text-xs text-[#8b8b95]">
                     {t("redirectingTo", { host: redirectHost })}
                   </p>

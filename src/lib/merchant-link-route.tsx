@@ -3,6 +3,7 @@ import { CheckoutLinkError } from "@/components/checkout/checkout-link-error";
 import { MerchantCheckoutPage } from "@/components/checkout/merchant-checkout-page";
 import type { CheckoutApiEnvironment } from "@/lib/checkout-api-environment";
 import { defaultSuccessPath } from "@/lib/checkout-api-environment";
+import { resolveMerchantSuccessRedirect } from "@/lib/merchant-redirect";
 import {
   fetchMerchantCheckoutSession,
   isValidMerchantCheckoutId,
@@ -44,10 +45,14 @@ export async function MerchantLinkRoute({
 
   if (isTerminalCheckoutStatus(result.session.status)) {
     if (result.session.status === "SUCCESSFUL") {
+      const merchantSuccess = resolveMerchantSuccessRedirect(
+        result.session,
+        result.session.transferId
+      );
       const target =
-        result.session.redirect ||
+        merchantSuccess ||
         defaultSuccessPath(result.session.transferId, environment);
-      redirect(target.startsWith("http") ? target : target);
+      redirect(target);
     }
     return (
       <CheckoutLinkError

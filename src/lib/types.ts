@@ -12,6 +12,9 @@ export interface TransactionStatusResponse {
   paid?: number;
   medium?: string;
   requestTime?: string;
+  /** Post-payment merchant return URL (when API includes it). */
+  redirect?: string | null;
+  redirectUrl?: string | null;
 }
 
 export interface MerchantCheckoutAppearance {
@@ -29,6 +32,9 @@ export interface MerchantCheckoutSession {
   payerEmail?: string;
   payerName?: string;
   redirect?: string | null;
+  successRedirect?: string | null;
+  successRedirectUrl?: string | null;
+  redirectOnSuccess?: string | null;
   cardAllowed?: boolean;
   message?: string;
   logo?: string;

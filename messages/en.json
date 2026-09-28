@@ -101,6 +101,7 @@
   "merchantCheckout": {
     "sandbox": "Sandbox mode",
     "sandboxNote": "No real money moves. Test numbers only.",
+    "sandboxTestNumbersDocs": "View sandbox test numbers in the docs",
     "backTo": "Back to {host}",
     "secureCheckout": "Secure checkout",
     "payTo": "Paying",

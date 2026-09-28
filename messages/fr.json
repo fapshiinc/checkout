@@ -101,6 +101,7 @@
   "merchantCheckout": {
     "sandbox": "Mode test",
     "sandboxNote": "Aucun argent réel. Numéros de test uniquement.",
+    "sandboxTestNumbersDocs": "Voir les numéros de test dans la documentation",
     "backTo": "Retour vers {host}",
     "secureCheckout": "Paiement sécurisé",
     "payTo": "Paiement à",

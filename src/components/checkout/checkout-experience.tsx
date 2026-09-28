@@ -6,6 +6,7 @@ import { CheckoutBackLink } from "@/components/checkout/checkout-back-link";
 import { CheckoutBrandHeader } from "@/components/checkout/checkout-brand-header";
 import { CheckoutFooter } from "@/components/checkout/checkout-footer";
 import { CheckoutPayButton } from "@/components/checkout/checkout-pay-button";
+import { CheckoutSandboxBanner } from "@/components/checkout/checkout-sandbox-banner";
 import { CheckoutSuccessPanel } from "@/components/checkout/checkout-success-panel";
 import { CheckoutStatusIcon } from "@/components/checkout/checkout-status-icon";
 import { formatCheckoutAmountValue } from "@/components/checkout/checkout-summary";
@@ -212,11 +213,7 @@ export function CheckoutExperience({
       )}
       style={{ ["--checkout-primary" as string]: payButtonBg }}
     >
-      {isSandbox ? (
-        <p className="bg-amber-50 px-4 py-2 text-center text-xs font-medium text-amber-900/80">
-          {t("sandbox")} — {t("sandboxNote")}
-        </p>
-      ) : null}
+      {isSandbox ? <CheckoutSandboxBanner /> : null}
 
       <div
         className={cn(

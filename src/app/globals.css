@@ -80,6 +80,8 @@ body {
   letter-spacing: -0.02em;
   -webkit-font-smoothing: antialiased;
   color-scheme: light;
+  margin: 0;
+  min-height: 100dvh;
 }
 
 .checkout-root,
@@ -211,8 +213,13 @@ body {
   @apply inline-block rounded-full border-[rgba(14,17,22,0.09)] border-t-[var(--checkout-primary,#3f5cfd)] animate-spin;
 }
 
+/** Full-height checkout pages — footer stays at bottom (static in flow, not fixed). */
+.checkout-shell {
+  @apply flex min-h-[100dvh] flex-col;
+}
+
 .checkout-footer {
-  @apply fixed bottom-0 left-0 right-0 z-10 border-t border-[#f3f4f6] bg-white/90 backdrop-blur-sm;
+  @apply mt-auto w-full shrink-0 border-t border-[#f3f4f6] bg-white/90 backdrop-blur-sm;
 }
 
 .safe-area-pb {

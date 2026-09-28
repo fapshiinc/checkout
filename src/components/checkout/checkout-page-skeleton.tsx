@@ -5,11 +5,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 export function CheckoutPageSkeleton() {
   return (
     <div
-      className="checkout-root flex min-h-screen flex-col bg-[#f6f7f9] text-[#1a1a1a]"
+      className="checkout-shell checkout-root flex flex-col bg-[#f6f7f9] text-[#1a1a1a]"
       aria-busy
       aria-label="Loading checkout"
     >
-      <div className="mx-auto flex w-full max-w-[420px] flex-1 flex-col px-4 pb-28 pt-4">
+      <div className="mx-auto flex w-full max-w-[420px] flex-1 flex-col px-4 pb-4 pt-4">
         <div className="mb-3 flex justify-end">
           <Skeleton className="h-7 w-[4.5rem] rounded-md" />
         </div>

@@ -16,12 +16,10 @@ export default async function MerchantCheckoutRoute({
 
   if (!isValidMerchantCheckoutId(linkId)) {
     return (
-      <div className="checkout-root min-h-screen">
-        <CheckoutLinkError
-          closedReason="unavailable"
-          description="This payment link is invalid or unavailable."
-        />
-      </div>
+      <CheckoutLinkError
+        closedReason="unavailable"
+        description="This payment link is invalid or unavailable."
+      />
     );
   }
 
@@ -32,15 +30,13 @@ export default async function MerchantCheckoutRoute({
       redirect(result.cardRedirect);
     }
     return (
-      <div className="checkout-root min-h-screen">
-        <CheckoutLinkError
-          closedReason={result.closedReason ?? "unavailable"}
-          description={
-            result.message || "This payment link is invalid or unavailable."
-          }
-          redirectUrl={result.redirect}
-        />
-      </div>
+      <CheckoutLinkError
+        closedReason={result.closedReason ?? "unavailable"}
+        description={
+          result.message || "This payment link is invalid or unavailable."
+        }
+        redirectUrl={result.redirect}
+      />
     );
   }
 
@@ -52,19 +48,13 @@ export default async function MerchantCheckoutRoute({
       redirect(target.startsWith("http") ? target : target);
     }
     return (
-      <div className="checkout-root min-h-screen">
-        <CheckoutLinkError
-          closedReason="expired"
-          description="This payment link has expired."
-          redirectUrl={result.session.redirect ?? undefined}
-        />
-      </div>
+      <CheckoutLinkError
+        closedReason="expired"
+        description="This payment link has expired."
+        redirectUrl={result.session.redirect ?? undefined}
+      />
     );
   }
 
-  return (
-    <div className="checkout-root min-h-screen">
-      <MerchantCheckoutPage session={result.session} />
-    </div>
-  );
+  return <MerchantCheckoutPage session={result.session} />;
 }

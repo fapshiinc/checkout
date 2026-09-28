@@ -200,8 +200,8 @@ export function CheckoutExperience({
   return (
     <div
       className={cn(
-        "checkout-experience flex flex-col bg-[#f6f7f9] font-sans text-[#1a1a1a]",
-        embed ? "min-h-[100dvh]" : "min-h-screen"
+        "checkout-shell checkout-experience flex flex-col bg-[#f6f7f9] font-sans text-[#1a1a1a]",
+        embed ? "min-h-[100dvh]" : "min-h-[100dvh]"
       )}
       style={{ ["--checkout-primary" as string]: payButtonBg }}
     >
@@ -211,7 +211,7 @@ export function CheckoutExperience({
         </p>
       ) : null}
 
-      <div className="mx-auto flex w-full max-w-[420px] flex-1 flex-col px-4 pb-36 pt-4">
+      <div className="mx-auto flex w-full max-w-[420px] flex-1 flex-col px-4 pb-4 pt-4">
         {showMerchantBack || showLocaleToggle ? (
           <div className="mb-3 flex items-center justify-between gap-3">
             {showMerchantBack && webBack ? (

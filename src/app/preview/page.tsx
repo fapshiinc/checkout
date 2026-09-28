@@ -3,7 +3,7 @@ import { CheckoutDashboardPreview } from "@/components/checkout/checkout-dashboa
 
 export default function CheckoutPreviewPage() {
   return (
-    <div className="checkout-root min-h-[100dvh] bg-[#f6f7f9]">
+    <div className="checkout-shell checkout-root bg-[#f6f7f9]">
       <Suspense
         fallback={
           <div className="flex min-h-[480px] items-center justify-center text-sm text-[#72747c]">

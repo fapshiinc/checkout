@@ -38,8 +38,8 @@ export function CheckoutLinkError({
       : t("linkUnavailableHelp");
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#f6f7f9] px-4 pb-32 pt-6 text-[#1a1a1a]">
-      <div className="mx-auto w-full max-w-[420px]">
+    <div className="checkout-shell flex flex-col bg-[#f6f7f9] px-4 pt-6 pb-4 text-[#1a1a1a]">
+      <div className="mx-auto flex w-full max-w-[420px] flex-1 flex-col">
         {webBack ? (
           <CheckoutBackLink
             href={webBack.href}

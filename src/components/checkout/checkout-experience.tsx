@@ -64,9 +64,9 @@ export interface CheckoutExperienceProps {
   message?: string;
   payerEmail?: string;
   payerName?: string;
-  /** Merchant URL from initiate-pay (CREATED) — back link while paying. */
+  /** initiate-pay redirectUrl — “Back to merchant” only when this is a merchant webpage. */
   redirectUrl?: string | null;
-  /** Post-payment return URL (SUCCESSFUL) — Done button + auto-redirect. */
+  /** Post-payment merchant return (SUCCESSFUL) from API — success CTA + auto-redirect. */
   successRedirectUrl?: string | null;
   createdAt?: string;
   cardAllowed?: boolean;
@@ -184,9 +184,9 @@ export function CheckoutExperience({
   const firstName =
     effectiveName.split(/\s+/)[0] || (activeLocale === "fr" ? "à vous" : "friend");
 
-  const merchantReturnUrl = successRedirectUrl ?? redirectUrl;
-  const redirectHost = merchantReturnUrl
-    ? merchantReturnUrl.replace(/^https?:\/\//, "").split("/")[0]
+  const successReturnUrl = successRedirectUrl?.trim() || null;
+  const redirectHost = successReturnUrl
+    ? successReturnUrl.replace(/^https?:\/\//, "").split("/")[0]
     : "";
 
   const webBack = parseWebBackUrl(redirectUrl);
@@ -532,7 +532,7 @@ export function CheckoutExperience({
                 amountLabel={amountLabel}
                 merchantName={displayTitle}
                 email={emailTrimmed || "your email"}
-                merchantReturnUrl={merchantReturnUrl}
+                merchantReturnUrl={successReturnUrl}
                 redirectHost={redirectHost}
                 redirectCountdown={redirectCountdown}
                 payButtonStyle={payBtnStyle}

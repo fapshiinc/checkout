@@ -61,7 +61,8 @@ export function MerchantCheckoutPage({
     resolveMerchantSuccessRedirect(session, session.transferId)
   );
 
-  const checkoutReturnUrl = session.redirect ?? null;
+  /** Raw redirect from merchant-link (for webpage “back” only — not success return). */
+  const merchantWebRedirect = session.redirect ?? null;
 
   useEffect(() => {
     return applyCheckoutBranding(appearance);
@@ -234,7 +235,7 @@ export function MerchantCheckoutPage({
         message={appearance.message || session.message}
         payerEmail={session.payerEmail}
         payerName={session.payerName}
-        redirectUrl={checkoutReturnUrl}
+        redirectUrl={merchantWebRedirect}
         successRedirectUrl={successRedirect}
         createdAt={session.createdAt}
         phase={phase}

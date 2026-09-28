@@ -512,7 +512,7 @@ export function CheckoutExperience({
                     href={receiptHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block text-sm font-semibold text-[#3f5cfd] underline-offset-2 hover:underline"
+                    className="checkout-receipt-link inline-block"
                   >
                     {t("downloadReceipt")}
                   </a>

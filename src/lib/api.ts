@@ -3,6 +3,7 @@ import {
   checkoutEnvRequestHeaders,
   getMerchantApiBase,
 } from "./checkout-api-environment";
+import { merchantApiRequestHeaders } from "./checkout-origin";
 import {
   resolveCheckoutClosedReason,
   type CheckoutClosedReason,
@@ -40,7 +41,10 @@ export async function fetchMerchantCheckoutSession(
   const apiBase = getMerchantApiBase(environment);
   const response = await fetch(
     `${apiBase}/merchant-link/${encodeURIComponent(mongoId)}`,
-    { cache: "no-store" }
+    {
+      cache: "no-store",
+      headers: merchantApiRequestHeaders(environment),
+    }
   );
 
   const data = (await response.json().catch(() => ({}))) as MerchantLinkPayload & {

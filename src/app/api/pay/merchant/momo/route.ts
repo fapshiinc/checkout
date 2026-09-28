@@ -2,6 +2,7 @@ import {
   getMerchantApiBase,
   resolveCheckoutEnvFromRequest,
 } from "@/lib/checkout-api-environment";
+import { getCheckoutOrigin } from "@/lib/checkout-origin";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -11,7 +12,10 @@ export async function POST(request: Request) {
 
     const response = await fetch(`${apiBase}/merchantpay/momo`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Origin: getCheckoutOrigin(),
+      },
       body: JSON.stringify(body),
     });
 

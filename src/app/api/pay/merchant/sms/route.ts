@@ -2,10 +2,8 @@ import {
   getMerchantApiBase,
   resolveCheckoutEnvFromRequest,
 } from "@/lib/checkout-api-environment";
+import { getCheckoutOrigin } from "@/lib/checkout-origin";
 import { NextResponse } from "next/server";
-
-const CHECKOUT_ORIGIN =
-  process.env.CHECKOUT_ORIGIN || "https://checkout.fapshi.com";
 
 export async function POST(request: Request) {
   try {
@@ -17,7 +15,7 @@ export async function POST(request: Request) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Origin: CHECKOUT_ORIGIN,
+        Origin: getCheckoutOrigin(),
       },
       body: JSON.stringify(body),
     });

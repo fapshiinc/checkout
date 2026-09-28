@@ -219,6 +219,24 @@ body {
   padding-bottom: calc(3.25rem + env(safe-area-inset-bottom, 0px));
 }
 
+/**
+ * Receipt / short document pages — reserve footer clearance on main only so
+ * a tall page does not leave a gray band below the fixed footer when scrolled.
+ */
+html:has(.checkout-shell--document),
+html:has(.checkout-shell--document) body {
+  min-height: 0;
+  height: auto;
+}
+
+.checkout-shell--document {
+  padding-bottom: 0;
+}
+
+.checkout-shell--document .checkout-main {
+  padding-bottom: calc(3.25rem + env(safe-area-inset-bottom, 0px));
+}
+
 .checkout-footer {
   @apply fixed bottom-0 left-0 right-0 z-20 w-full border-t border-[#f3f4f6] bg-white/95 backdrop-blur-sm;
   padding-top: 0.75rem;
